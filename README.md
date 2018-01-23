@@ -44,7 +44,7 @@ restart the SSH service : sudo service ssh restart
 Step-7 : SSH- Keys
 generate key-pair with ssh-keygen
 Save keygen file into (/home/ubuntu/.ssh/linux_security_configuration_project) and fill in the password. 2 keys will be generated, public key (linux_security_configuration_project.pub) and identification key(linux_security_configuration_project).
-Login into grader account using ssh -v grader@"public_IP_address" -p 2200. type the password that you have fill during user creation (sudo adduser grader step 3) . ubuntu@54.218.76.136:~$ ssh -v grader@54.218.76.136 -p 2200 grader@ip-54.218.76.136 password :
+Login into grader account using ssh -v grader@"public_IP_address" -p 2200. type the password that you have filled in during user creation (sudo adduser grader step 3) . ubuntu@54.218.76.136:~$ ssh -v grader@54.218.76.136 -p 2200 grader@ip-54.218.76.136 password :
 if the password is correct , you will login as grader account: grader@ip-54.218.76.136:~$
 make a directory in grader account : mkdir .ssh
 make a authorized_keys file using touch .ssh/authorized_keys
