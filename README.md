@@ -62,26 +62,40 @@ Step 6: Change the SSH port from 22 to 2200
     and enter Yes to confirm editing by root
     i.   Change port from 22 to 2200
     ii.  Change "PermitRootLogin prohibit-password" to "PermitRootLogin no". It will disable root login.
-    iii. Change "PasswordAuthentication no" to "Passw
-    ordAuthentication yes".
+    iii. Change "PasswordAuthentication no" to "PasswordAuthentication yes".
     iv.  Add "AllowUsers grader" at end of the file so that we will login through grader and save it (ctrl-X , then Y and Enter)
     v.   Confirm editing was saved by checking the file with:
          sudo cat /etc/ssh/sshd_config
 2.  Restart the SSH service : sudo service ssh restart
 
 Step 7: SSH- Keys
-1.  generate key-pair with ssh-keygen
-2.  Save keygen file into (/home/ubuntu/.ssh/linux-security-config) and fill in the password. 2 keys will be generated, public key (linux-security-config.pub) and identification key(linux-security-config).
-3.  Login into grader account using ssh -v grader@"public_IP_address" -p 2200. type the password that you have filled in during user creation (sudo adduser grader step 3) . ubuntu@54.218.76.136:~$ ssh -v grader@54.218.76.136 -p 2200 grader@ip-54.218.76.136 password :
-if the password is correct , you will login as grader account: grader@ip-54.218.76.136:~$
+1.  generate key-pair with "ssh-keygen"
+
+2.  Save keygen file into (/home/vagrant/.ssh/linux_server_config) and fill in the password. 2 keys will be generated, public key (linux_server_config.pub) and identification key(linux_server_config).
+
+3.  Login into the grader account using ssh -v grader@"public-IP-address" -p 2200.
+    ii.  vagrant@vagrant-ubuntu-trusty-64:~$: ssh -v grader@54.218.76.136 -p 2200
+    iii.  enter password you chose during initial setup of grader.  
+    iv.  on successful login, you will see:  grader@ip-54.218.76.136:~$
+    
 4.  make a directory in grader account : mkdir .ssh
+
 5.  make a authorized_keys file using touch .ssh/authorized_keys
-6.  from your local machine,copy the contents of public key(linuxProject.pub).
-    paste that contents on authorized_keys of grader account using nano authorized_keys and save it .
+
+6.  from your local machine,copy the contents of public key(linux_server_config.pub).
+    i.  sudo cat /home/vagrant/.ssh/linux_server_config.pub
+    ii.  copy and paste the contents into authorized_keys and save with control+X.
+
 7.  give the permissions : chmod 700 .ssh and chmod 644 .ssh/authorized_keys.
-    i.  do nano /etc/ssh/sshd_config , change PasswordAuthentication to no .
-8.  sudo service ssh restart.
-9.  ssh grader@54.218.76.136 -p 2200 -i ~/.ssh/linux_security_configuration_project in new terminal .A pop-up window will open for authentication. just fill the password that you have fill during ssh-keygen creation.
+    i.  do nano /etc/ssh/sshd_config and change "PasswordAuthentication yes" to "PasswordAuthentication" no.
+    ii.  sudo service ssh restart.
+    
+8.  ssh grader@54.218.76.136 -p 2200 -i ~/.ssh/linux_server_config in new terminal .A pop-up window will open for authentication. 
+    i.  enter created password for grader
+    
+
+    
+ 
 
 
 
