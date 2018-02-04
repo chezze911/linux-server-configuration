@@ -74,26 +74,13 @@ In order for your project to be reviewed, the grader needs to be able to log in 
         sudo apt-get install finger
         finger grader
         (provides additional information(login , directory, name, shell, etc) of the user named grader)
-        
+     
+
 7. Give grader the permission to sudo.
     1.  sudo visudo (edit the sudoers file . To save, use sudo visudo to edit the sudoers file otherwise file will not be saved)
     i.  add the below line of code after root ALL=(ALL:ALL) ALL grader ALL=(ALL:ALL) ALL and save it (ctrl-X , then Y and Enter)
     Your new user(grader) is able to execute commands with administrative privileges. ( for example - sudo anycommand)
     ii.  You can check the grader entry by entering the command: sudo cat /etc/sudoers
-
-
-8.  Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
-    1.  ubuntu@ip-172-13-120:~$ sudo nano /etc/ssh/sshd_config 
-    and enter Yes to confirm editing by root
-        i.   Change port 22 to port 2200
-        ii.  Change "PermitRootLogin prohibit-password" to "PermitRootLogin no" to disable root login.
-        iii. Change "PasswordAuthentication no" to "PasswordAuthentication yes".
-        iv.  Add "AllowUsers grader" at end of the file so that we will login through grader and save
-        v.   Confirm editing was saved by checking the file with:
-            sudo cat /etc/ssh/sshd_config
-    2.  Restart the SSH service : sudo service ssh restart
-
-Warning: When changing the SSH port, make sure that the firewall is open for port 2200 first, so that you don't lock yourself out of the server. Review this video for details! When you change the SSH port, the Lightsail instance will no longer be accessible through the web app 'Connect using SSH' button. The button assumes the default port is being used. There are instructions on the same page for connecting from your terminal to the instance. Connect using those instructions and then follow the rest of the steps.
 
     
 8. Create an SSH key pair for grader using the ssh-keygen tool on your local machine.
@@ -102,8 +89,28 @@ Warning: When changing the SSH port, make sure that the firewall is open for por
     2.  Save keygen file into (/home/ubuntu/.ssh/linux_server_config_6) and fill in the password. 2 keys will be generated, public key (linux_server_config_6.pub) and identification key(linux_server_config_6).
     
 
+    3.  Login into the grader account using on your virtual machine:
+        ubuntu@ip-172-26-15-205:~$ su - grader
+        enter password
+        on successful login, you will see 
+        grader@ip-172-26-15-205
+        $ mkdir .ssh
+        $ touch .ssh/authorized_keys
+        $ nano .ssh/authorized_keys
+        
+        copy and paste identification key from local machine .ssh/linux_security_config_7.pub file
+        to grader's .ssh/authorized_keys file and save it.
+        
+        Next, set file permissions using the following commands:
+        $ chmod 700 .ssh
+        $ chmod 644 .ssh/authorized_keys
+        
+        Next, login to grader by entering the following commands:
+        $ ssh grader@"public-ip-address" -p 2200 -i  ~/.ssh/linux_security_config_7
+        
 
-    3.  Login into the grader account using 
+        
+        
         ssh -i ~/Downloads/LightsailDefaultPrivateKey-us-west-2.pem grader@34.213.177.211
         
         ssh -i ~/.ssh/linux_security_config -p 2200 grader@54.218.76.136 
