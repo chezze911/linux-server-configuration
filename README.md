@@ -6,7 +6,7 @@ Get your server.
 2. Follow the instructions provided to SSH into your server.
 
 Public IP
-34.214.50.123
+34.209.213.255
 
 User name
 ubuntu
@@ -94,6 +94,7 @@ In order for your project to be reviewed, the grader needs to be able to log in 
         enter password
         on successful login, you will see 
         grader@ip-172-26-15-205
+        In the grader account:
         $ mkdir .ssh
         $ touch .ssh/authorized_keys
         $ nano .ssh/authorized_keys
@@ -111,7 +112,9 @@ In order for your project to be reviewed, the grader needs to be able to log in 
         $ sudo service ssh restart
         
         Next, login to grader by entering the following commands:
-        $ ssh grader@34.209.213.255 -p 2200 -i  ~/.ssh/linux_security_config_7
+        $ ssh grader@34.209.213.255 -p 2200 -i  ~/.ssh/linux_security_config_7 
+        or try
+        $ ssh -i ~/.ssh/linux_security_config_7 -p 2200 grader@34.209.213.255
         
 
         
