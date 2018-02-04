@@ -105,8 +105,13 @@ In order for your project to be reviewed, the grader needs to be able to log in 
         $ chmod 700 .ssh
         $ chmod 644 .ssh/authorized_keys
         
+        Next, do
+        $ sudo nano /etc/ssh/sshd_config 
+        and change PasswordAuthentication to no
+        $ sudo service ssh restart
+        
         Next, login to grader by entering the following commands:
-        $ ssh grader@"public-ip-address" -p 2200 -i  ~/.ssh/linux_security_config_7
+        $ ssh grader@34.209.213.255 -p 2200 -i  ~/.ssh/linux_security_config_7
         
 
         
