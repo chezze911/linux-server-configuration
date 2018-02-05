@@ -6,7 +6,7 @@ Get your server.
 2. Follow the instructions provided to SSH into your server.
 
 Public IP
-34.209.213.255
+54.201.205.236
 
 User name
 ubuntu
@@ -20,7 +20,7 @@ keychain login
 
 mv ~/Downloads/LightsailDefaultPrivateKey-us-west-2.pem ~/.ssh/
 chmod 600 ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem
-ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@34.213.177.211
+ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@54.201.205.236
 
 
 Note:  
@@ -31,26 +31,26 @@ Warning: Permanently added '34.209.213.255' (ECDSA) to the list of known hosts.
 Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-1013-aws x86_64)
 
 private server:
-ubuntu@ip-172-26-15-205
+ubuntu@ip-172-26-2-21
 
 
 Secure your server.
 3. Update all currently installed packages.
-    1.  sudo apt-get update - command will update list of packages and their versions on your machine.
-    2.  sudo apt-get upgrade - command will install the packages
+    1.  sudo apt-get update - This command will update list of packages and their versions
+    2.  sudo apt-get upgrade - This command will install the packages
         i.  SELECT by highlighting "keep the local version currently installed" and hit ENTER
 
 
 4.  Configure the Uncomplicated Firewall (UFW) to only allow incoming connections for SSH (port 2200), HTTP (port 80), and NTP (port 123).
     1.  check the firewall status using sudo ufw status.
-    2.  block all incoming connections on all ports using sudo ufw default deny incoming.
-    3.  allow outgoing connections on all ports using sudo ufw default allow outgoing.
-    4.  allow incoming connection for SSH(port 2200) using sudo ufw allow 2200/tcp.
-    5.  allow incoming connection for HTTP(port 80) using sudo ufw allow 80/tcp.
-    6.  allow incoming connection for NTP(port 123) using sudo ufw allow 123/udp.
-    7.  check the added rules using sudo ufw show added.
-    8.  enable the firewall using sudo ufw enable.
-    9.  check whether firewall is enable or not using sudo ufw status.
+    2.  block all incoming connections on all ports using sudo ufw default deny incoming
+    3.  allow outgoing connections on all ports using sudo ufw default allow outgoing
+    4.  allow incoming connection for SSH(port 2200) using sudo ufw allow 2200/tcp
+    5.  allow incoming connection for HTTP(port 80) using sudo ufw allow 80/tcp
+    6.  allow incoming connection for NTP(port 123) using sudo ufw allow 123/udp
+    7.  check the added rules using sudo ufw show added
+    8.  enable the firewall using sudo ufw enable
+    9.  check whether firewall is enable or not using sudo ufw status
     
 5.  Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
     1.  ubuntu@ip-172-13-120:~$ sudo nano /etc/ssh/sshd_config 
@@ -86,8 +86,8 @@ In order for your project to be reviewed, the grader needs to be able to log in 
 8. Create an SSH key pair for grader using the ssh-keygen tool on your local machine.
     1.  generate key-pair with "ssh-keygen"
 
-    2.  Save keygen file into (/home/ubuntu/.ssh/linux_server_config_6) and fill in the password. 2 keys will be generated, public key (linux_server_config_6.pub) and identification key(linux_server_config_6).
-    
+    2.  Save keygen file into (/home/ubuntu/.ssh/udacity_key.rsa) and fill in the password. 2 keys will be generated, public key (udacity_key.rsa.pub) and identification key(udacity_key.rsa).
+  
 
     3.  Login into the grader account using on your virtual machine:
         ubuntu@ip-172-26-15-205:~$ su - grader
@@ -99,7 +99,7 @@ In order for your project to be reviewed, the grader needs to be able to log in 
         $ touch .ssh/authorized_keys
         $ nano .ssh/authorized_keys
         
-        copy and paste identification key from local machine .ssh/linux_security_config_7.pub file
+        copy and paste identification key from local machine .ssh/udacity_key.rsa.pub file
         to grader's .ssh/authorized_keys file and save it.
         
         Next, set file permissions using the following commands:
@@ -112,10 +112,12 @@ In order for your project to be reviewed, the grader needs to be able to log in 
         $ sudo service ssh restart
         
         Next, login to grader by entering the following commands:
-        $ ssh grader@34.209.213.255 -p 2200 -i  ~/.ssh/linux_security_config_7 
-        or try
-        $ ssh -i ~/.ssh/linux_security_config_7 -p 2200 grader@34.209.213.255
         
+        $ ssh -i ~/.ssh/udacity_key.rsa -p 2200 grader@54.201.205.236
+        
+        on successful login, you will see:  grader@ip-172-26-5-246:~$ 
+        
+ 
 
         
         
