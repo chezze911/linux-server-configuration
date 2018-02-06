@@ -288,8 +288,8 @@ Prepare to deploy your project.
     7.  Move to the inner FlaskApp directory
         cd FlaskApp
     8.  Rename catalog_project.py to __init__.py
-        sudo mv catalog_project.py __init__.py
-    9. Edit catalog_database_setup.py, __init__.py, and catalog_lotsofitems.py and change
+        sudo mv catalog_project.py __init__.py . 
+  ** FINISHED UP TO HERE **  9. Edit catalog_database_setup.py, __init__.py, and catalog_lotsofitems.py and change
         engine = create_engine('sqlite://toyshop.db') to
         engine = create_engine('postgresql:///catalog:password@localhost/catalog')
     10.  Install pip
@@ -339,6 +339,10 @@ Create a new database user named catalog that has limited permissions to your ca
     vii.  Get into the FlaskApp directory with cd FlaskApp/vagrant/catalog
     
     viii.  rename website.py to __init__.py with sudo mv website.py __init__.py
+    
+    
+    
+    **finished up to here**
     
     viiii. edit database_setup.py, website.py and functions_helper.py and change
             engine = create_engine('sqlite:///toyshop.db') to 
