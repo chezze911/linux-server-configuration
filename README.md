@@ -217,6 +217,39 @@ Prepare to deploy your project.
             sudo python __init__.py
             Note:  should display "* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)"
             deactivate virtual environment with "deactivate"
+            
+            
+   4.  
+        i.  sudo nano /etc/apache2/sites-available/FlaskApp.conf
+        ii.  Configure the virtual host by adding your servername
+            <VirtualHost *:80>
+                ServerName mywebsite.com
+                ServerAdmin admin@mywebsite.com
+                WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
+                <Directory /var/www/FlaskApp/FlaskApp/>
+                    Order allow,deny
+                    Allow from all
+                </Directory>
+                Alias /static /var/www/FlaskApp/FlaskApp/static
+                <Directory /var/www/FlaskApp/FlaskApp/static/>
+                    Order allow,deny
+                    Allow from all
+                </Directory>
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                LogLevel warn
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+            </VirtualHost>
+            *Save and close file
+         iii.  enable virtual host
+                sudo a2ensite FlaskApp
+                NOTE: iff you ge an error for FlaskApp.conf file, so edit the FlaskApp.conf file by setting your Servername, ServerAdmin as:
+
+<VirtualHost *:80>
+         ServerName 34.214.197.23
+         ServerAdmin admin@34.214.197.23
+         ServerAlias ec2-34-214-197-23.us-west-2.compute.amazonaws.com
+         
+   5.  
       
     
     
