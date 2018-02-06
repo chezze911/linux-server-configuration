@@ -168,8 +168,8 @@ Create a new database user named catalog that has limited permissions to your ca
     iii.  Use sudo mkdir FlaskApp to create an application directory
     iv.  Use cd FlaskApp to move into the directory
     v.  Clone the Catalog App to the virtual machine with 
-        git clone https://github.com/chezze911/item_catalog.git
-    vi.  rename the project with the command sudo mv ./item_catalog ./FlaskApp
+        git clone https://github.com/chezze911/FSND-Virtual-Machine-2
+    vi.  rename the project with the command sudo mv ./FSND-Virtual-Machine-2 ./FlaskApp
     vii.  Get into the FlaskApp directory with cd FlaskApp
     viii.  rename website.py to __init__.py with sudo mv website.py __init__.py
     viiii. edit database_setup.py, website.py and functions_helper.py and change
