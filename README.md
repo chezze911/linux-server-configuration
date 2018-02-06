@@ -287,9 +287,20 @@ Prepare to deploy your project.
         sudo mv ./FSND-Virtual-Machine-2 ./FlaskApp
     7.  Move to the inner FlaskApp directory
         cd FlaskApp
-    8.  Rename website.py to __init__.py
-        sudo mv website.py __init__.py
-    9.
+    8.  Rename catalog_project.py to __init__.py
+        sudo mv catalog_project.py __init__.py
+    9. Edit catalog_database_setup.py, __init__.py, and catalog_lotsofitems.py and change
+        engine = create_engine('sqlite://toyshop.db') to
+        engine = create_engine('postgresql:///catalog:password@localhost/catalog')
+    10.  Install pip
+        sudo apt-get install python-pip
+    11. Install dependencies
+        sudo pip install -r requirements.txt
+    12. Install psycopg2
+        sudo apt-get -qqy install postgresql python-psycopg2
+    13.  Create a database schema
+        sudo python database_setup.py
+ 
         
     sudo mv FSND-Virtual-Machine-2/vagrant/catalog /var/www/catalog/catalog/
     
@@ -321,22 +332,22 @@ Do not allow remote connections
 Create a new database user named catalog that has limited permissions to your catalog application database.
 12. Install git.
 
-    i.  Install Git with command sudo apt-get install git
-    ii.  Use cd /var/www to get into the /var/www directory
-    iii.  Use sudo mkdir FlaskApp to create an application directory
-    iv.  Use cd FlaskApp to move into the directory
-    v.  Clone the Catalog App to the virtual machine with 
+    v.  From grader@ip-172-26-3-24:~$ 
+        Clone the Catalog App to the virtual machine
         git clone https://github.com/chezze911/FSND-Virtual-Machine-2
     vi.  rename the project with the command sudo mv ./FSND-Virtual-Machine-2 ./FlaskApp
-    vii.  Get into the FlaskApp directory with cd FlaskApp
+    vii.  Get into the FlaskApp directory with cd FlaskApp/vagrant/catalog
+    
     viii.  rename website.py to __init__.py with sudo mv website.py __init__.py
+    
     viiii. edit database_setup.py, website.py and functions_helper.py and change
             engine = create_engine('sqlite:///toyshop.db') to 
             engine = create_engine('postgresql://catalog:password@localhost/catalog')
     x.  Install pip with sudo apt-get install python-pip
     xi.  sudo pip install -r requirements.txt to install dependencies
     xii.  sudo apt-get -qqy install postgresql python-psycopg2 to install psycopg2
-    xiii.  Create a database schema with sudo python database_setup.py
+    xiii.  Create a database schema with 
+            sudo python database_setup.py
     
     
 Configure and Enable a New Virtual Host
