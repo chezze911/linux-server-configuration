@@ -170,6 +170,54 @@ Prepare to deploy your project.
         git config --global user.name "username"
         git config --global user.email "email@domain.com"
     Note:  Check configurations with "git config --list"
+    
+    
+ 
+ Deploy Flask Application (6 steps)
+    1.  
+        i. Install python-dev because mod-wsgi is already installed
+            sudo apt-get install python-dev
+        ii. enable mod_wsgi
+            sudo a2enmod wsgi
+    2.  
+        i.  move into the /var/www directory
+            1.  create the app directory structure
+                sudo mkdir catalog
+            2.  move into that directory
+                cd catalog
+            3.  create another directory
+                sudo mkdir catalog
+            4.  make 2 subdirectories within the current directory named static and templates
+                cd catalog
+                sudo mkdir static templates
+            5.  make the init.py file
+                sudo nano __init__.py
+            6.  Add this content to the file and close and save
+                from flask import Flask
+                app = Flask(__name__)
+                @app.route("/")
+                def hello():
+                    return "Hello, everyone!"
+                if __name__ == "__main__":
+                app.run()
+    3.  
+        i.  Create a virtual environment for our flask app
+            sudo apt-get install python-pip
+        ii.  Install virtualenv
+            sudo pip install virtualenv
+        iii.  Set the environment name
+            sudo virtualenv venv
+        iv.  install Flask by activating virtual environment:
+            source venv/bin/activate
+        v.  install Flask
+            sudo pip install Flask
+        vi.  test to see if installation was successful
+            sudo python __init__.py
+            
+            
+      
+    
+    
    
 
 If you built your project with Python 3, you will need to install the Python 3 mod_wsgi package on your server: sudo apt-get install libapache2-mod-wsgi-py3.
