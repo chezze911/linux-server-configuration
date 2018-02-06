@@ -250,7 +250,28 @@ Prepare to deploy your project.
          ServerAlias ec2-34-214-197-23.us-west-2.compute.amazonaws.com
          
    5.  
-      
+        i.  Create a wsgi file
+            cd /var/www/catalog
+            sudo nano catalog.wsgi
+        ii. add the below content to the file
+            #!/usr/bin/python
+            import sys
+            import logging
+            logging.basicConfig(stream=sys.stderr)
+            sys.path.insert(0,"/var/www/FlaskApp/")
+            from FlaskApp import app as application
+            application.secret_key = 'Add your secret key'
+            Note:  current directory structure should be:
+                |--------catalog
+                |----------------catalog
+                |-----------------------static
+                |-----------------------templates
+                |-----------------------venv
+                |-----------------------__init__.py
+                |----------------catalog.wsgi
+      6.  
+        i.  Restart Apache
+            sudo service apache2 restart
     
     
    
