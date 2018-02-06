@@ -275,7 +275,23 @@ Prepare to deploy your project.
   
   
   Clone the Github Repository
-    1.  sudo mv catalog /var/www/catalog/catalog/
+    1.  install Git using sudo apt-get install git
+    2.  Use cd /var/www to move into the directory
+    3.  Create the app directory 
+        sudo mkdir FlaskApp
+    4.  Move inside that directory
+        cd FlaskApp
+    5.  Clone the Catalog App to the virtual machine
+        git clone https://github.com/chezze911/FSND-Virtual-Machine-2.git
+    6.  Rename the project name 
+        sudo mv ./FSND-Virtual-Machine-2 ./FlaskApp
+    7.  Move to the inner FlaskApp directory
+        cd FlaskApp
+    8.  Rename website.py to __init__.py
+        sudo mv website.py __init__.py
+    9.
+        
+    sudo mv FSND-Virtual-Machine-2/vagrant/catalog /var/www/catalog/catalog/
     
    
 
