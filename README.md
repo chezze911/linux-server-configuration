@@ -162,6 +162,7 @@ If you built your project with Python 3, you will need to install the Python 3 m
 Do not allow remote connections
 Create a new database user named catalog that has limited permissions to your catalog application database.
 12. Install git.
+
     i.  Install Git with command sudo apt-get install git
     ii.  Use cd /var/www to get into the /var/www directory
     iii.  Use sudo mkdir FlaskApp to create an application directory
@@ -181,10 +182,6 @@ Create a new database user named catalog that has limited permissions to your ca
     
     
 Configure and Enable a New Virtual Host
-
-    
-
-
 
 
 
