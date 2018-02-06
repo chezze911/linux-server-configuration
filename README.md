@@ -213,8 +213,8 @@ Prepare to deploy your project.
             sudo pip install Flask
         vi.  test to see if installation was successful
             sudo python __init__.py
-            
-            
+            Note:  should display "Running on http://127.0.0.1:5000/"
+            deactivate virtual environment with "deactivate"
       
     
     
