@@ -182,11 +182,11 @@ Prepare to deploy your project.
     2.  
         i.  move into the /var/www directory
             1.  create the app directory structure
-                sudo mkdir catalog
+                sudo mkdir FlaskApp
             2.  move into that directory
-                cd catalog
+                cd FlaskApp
             3.  create another directory
-                sudo mkdir catalog
+                sudo mkdir FlaskApp
             4.  make 2 subdirectories within the current directory named static and templates
                 cd catalog
                 sudo mkdir static templates
@@ -208,13 +208,14 @@ Prepare to deploy your project.
             note: run "export LC_ALL=C" if you receive an unsupported locale setting issue
         iii.  Set the environment name
             sudo virtualenv venv
+            note: "sudo /usr/bin/easy_install virtualenv" if virutalenv command does not work. 
         iv.  install Flask by activating virtual environment:
             source venv/bin/activate
         v.  install Flask
             sudo pip install Flask
         vi.  test to see if installation was successful
             sudo python __init__.py
-            Note:  should display "Running on http://127.0.0.1:5000/"
+            Note:  should display "* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)"
             deactivate virtual environment with "deactivate"
       
     
