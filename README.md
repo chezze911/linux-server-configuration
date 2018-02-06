@@ -22,11 +22,10 @@ i.      mv ~/Downloads/LightsailDefaultPrivateKey-us-west-2.pem ~/.ssh/
 ii.     chmod 600 ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem
 iii.    ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@34.214.197.23
 
-ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@34.214.197.23 -o ServerAliveInterval=5 -v
--o ServerAliveInternal=5
+ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@34.214.197.23 
 
 private server:
-ubuntu@ip-172-26-2-21
+ubuntu@ip-172-26-3-24
 
 Give grader access.
 In order for your project to be reviewed, the grader needs to be able to log in to your server.
@@ -41,12 +40,12 @@ In order for your project to be reviewed, the grader needs to be able to log in 
 
 2. Give grader the permission to sudo.
     1.  sudo visudo (edit the sudoers file . To save, use sudo visudo to edit the sudoers file otherwise file will not be saved)
-    i.  add the below line of code after root ALL=(ALL:ALL) ALL grader ALL=(ALL:ALL) ALL and save it (ctrl-X , then Y and Enter)
+    i.  add the below line of code after root ALL=(ALL:ALL) ALL grader ALL=(ALL:ALL) ALL and save it (ctrl-X , then Y and Enter) Note: tab space between grader and ALL.
     Your new user(grader) is able to execute commands with administrative privileges. ( for example - sudo anycommand)
     ii.  You can check the grader entry by entering the command: sudo cat /etc/sudoers
     iii.  Reload SSH to apply new settings
           $ reload ssh
-          (use "sudo apt get upstart" if needed)
+          (use command "sudo apt get upstart" if needed)
 
     
 3. Create an SSH key pair for grader using the ssh-keygen tool on your local machine.
@@ -60,7 +59,7 @@ In order for your project to be reviewed, the grader needs to be able to log in 
         $ su - grader
         enter password
         on successful login, you will see 
-        grader@ip-172-26-15-205
+        grader@ip-172-26-3-24
         In the grader account:
         ii.  create .ssh foler in /home/grader
         $ mkdir /home/grader/.ssh
@@ -81,7 +80,7 @@ In order for your project to be reviewed, the grader needs to be able to log in 
         and change PasswordAuthentication to no
         $ sudo service ssh restart
         
-        Next, login to grader by entering the following commands:
+        Next, login to grader from another terminal by entering the following commands:
         
         $ ssh -i ~/.ssh/udacity_key.rsa grader@54.201.205.236
         
@@ -99,6 +98,7 @@ Secure your server.
     1.  check the firewall status using sudo ufw status.
     2.  block all incoming connections on all ports using sudo ufw default deny incoming
     3.  allow outgoing connections on all ports using sudo ufw default allow outgoing
+    4.  allow ssh connection using sudo ufw allow ssh
     4.  allow incoming connection for SSH(port 2200) using sudo ufw allow 2200/tcp
     5.  allow incoming connection for HTTP(port 80) using sudo ufw allow 80/tcp
     6.  allow incoming connection for NTP(port 123) using sudo ufw allow 123/udp
@@ -107,7 +107,7 @@ Secure your server.
     9.  check whether firewall is enable or not using sudo ufw status
     
 6.  Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
-    1.  ubuntu@ip-172-13-120:~$ sudo nano /etc/ssh/sshd_config 
+    1.  grader@ip-172-26-3-24:~$ sudo nano /etc/ssh/sshd_config 
     and enter Yes to confirm editing by root
         i.   Change port 22 to port 2200
         ii.  Change "PermitRootLogin prohibit-password" to "PermitRootLogin no" to disable root login.
@@ -119,16 +119,48 @@ Secure your server.
 
 Warning: When changing the SSH port, make sure that the firewall is open for port 2200 first, so that you don't lock yourself out of the server. Review this video for details! When you change the SSH port, the Lightsail instance will no longer be accessible through the web app 'Connect using SSH' button. The button assumes the default port is being used. There are instructions on the same page for connecting from your terminal to the instance. Connect using those instructions and then follow the rest of the steps.
 
+login to grader account to see if port change from 22 to 2200 worked,
+
+$ ssh -i ~/.ssh/udacity_key.rsa grader@54.201.205.236 -p 2200
 
 
 
 
 Prepare to deploy your project.
 9. Configure the local timezone to UTC.
+    Use command sudo dpkg-reconfigure tzdata
+    and choose UTC from the options
+    
 10. Install and configure Apache to serve a Python mod_wsgi application.
+    i.  Install Apache sudo apt-get install apache2
+    ii.  Install mod_wsgi with sudo apt-get install python-setuptools libapache2-mod-wsgi
+    iii.  Restart with sudo service apache2 restart
+   
 
 If you built your project with Python 3, you will need to install the Python 3 mod_wsgi package on your server: sudo apt-get install libapache2-mod-wsgi-py3.
 11. Install and configure PostgreSQL:
+    i.  sudo apt-get install postgresql
+    ii.  Check that no remote connections are allowed by using the command:
+    sudo vim /etc/postgresql/9.3/main/pg_hba.conf
+    iii.  login as user postgres
+    sudo su - postgres
+    iv.  Get into the postgreSQL shell with psql
+    v.  create a new database named catalog and create a new user named catalog in a postgreSQL shell
+        postgre=# CREATE DATABASE catalog;
+        postgre=# CREATE USER catalog;
+        
+    vi.  Create a password for the user catalog
+        postgres=# ALTER ROLE catalog WITH PASSWORD 'password';
+        
+    vii.  Give user catalog permission to catalog the appliation database
+            postgres=# GRANT ALL PRIVILEDGES ON DATABASE catalog TO catalog;
+    
+    viii.  Quit and exit postgreSQL 
+            postgre=# \q
+            postgre=# exit
+       
+           
+        
 
 Do not allow remote connections
 Create a new database user named catalog that has limited permissions to your catalog application database.
