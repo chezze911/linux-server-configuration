@@ -272,7 +272,10 @@ Prepare to deploy your project.
       6.  
         i.  Restart Apache
             sudo service apache2 restart
-    
+  
+  
+  Clone the Github Repository
+    1.  sudo mv catalog /var/www/catalog/catalog/
     
    
 
