@@ -140,31 +140,53 @@ Prepare to deploy your project.
 If you built your project with Python 3, you will need to install the Python 3 mod_wsgi package on your server: sudo apt-get install libapache2-mod-wsgi-py3.
 11. Install and configure PostgreSQL:
     i.  sudo apt-get install postgresql
-    ii.  Check that no remote connections are allowed by using the command:
-    sudo vim /etc/postgresql/9.3/main/pg_hba.conf
-    iii.  login as user postgres
-    sudo su - postgres
-    iv.  Get into the postgreSQL shell with psql
-    v.  create a new database named catalog and create a new user named catalog in a postgreSQL shell
+    ii. login as user postgres
+        sudo su - postgres
+    iii. Get into the postgreSQL shell with the command psql
+    iv.  create a new database named catalog and create a new user named catalog in a postgreSQL shell
         postgre=# CREATE DATABASE catalog;
         postgre=# CREATE USER catalog;
         
-    vi.  Create a password for the user catalog
+    v.  Create a password for the user catalog
         postgres=# ALTER ROLE catalog WITH PASSWORD 'password';
         
-    vii.  Give user catalog permission to catalog the appliation database
+    vi.  Give user catalog permission to catalog the appliation database
             postgres=# GRANT ALL PRIVILEDGES ON DATABASE catalog TO catalog;
     
-    viii.  Quit and exit postgreSQL 
+    vii.  Quit and exit postgreSQL 
             postgre=# \q
             postgre=# exit
        
-           
-        
+ 
 
 Do not allow remote connections
 Create a new database user named catalog that has limited permissions to your catalog application database.
 12. Install git.
+    i.  Install Git with command sudo apt-get install git
+    ii.  Use cd /var/www to get into the /var/www directory
+    iii.  Use sudo mkdir FlaskApp to create an application directory
+    iv.  Use cd FlaskApp to move into the directory
+    v.  Clone the Catalog App to the virtual machine with 
+        git clone https://github.com/chezze911/item_catalog.git
+    vi.  rename the project with the command sudo mv ./item_catalog ./FlaskApp
+    vii.  Get into the FlaskApp directory with cd FlaskApp
+    viii.  rename website.py to __init__.py with sudo mv website.py __init__.py
+    viiii. edit database_setup.py, website.py and functions_helper.py and change
+            engine = create_engine('sqlite:///toyshop.db') to 
+            engine = create_engine('postgresql://catalog:password@localhost/catalog')
+    x.  Install pip with sudo apt-get install python-pip
+    xi.  sudo pip install -r requirements.txt to install dependencies
+    xii.  sudo apt-get -qqy install postgresql python-psycopg2 to install psycopg2
+    xiii.  Create a database schema with sudo python database_setup.py
+    
+    
+Configure and Enable a New Virtual Host
+
+    
+
+
+
+
 
 
  
