@@ -205,6 +205,7 @@ Prepare to deploy your project.
             sudo apt-get install python-pip
         ii.  Install virtualenv
             sudo pip install virtualenv
+            note: run "export LC_ALL=C" if you receive an unsupported locale setting issue
         iii.  Set the environment name
             sudo virtualenv venv
         iv.  install Flask by activating virtual environment:
