@@ -6,7 +6,7 @@ Get your server.
 2. Follow the instructions provided to SSH into your server.
 
 Public IP
-54.201.205.236
+34.214.197.23
 
 User name
 ubuntu
@@ -18,10 +18,12 @@ keychain login
 
 - an error occured.  unable to import the item.
 
-mv ~/Downloads/LightsailDefaultPrivateKey-us-west-2.pem ~/.ssh/
-chmod 600 ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem
-ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@54.201.205.236
+i.      mv ~/Downloads/LightsailDefaultPrivateKey-us-west-2.pem ~/.ssh/
+ii.     chmod 600 ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem
+iii.    ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@34.214.197.23
 
+ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@34.214.197.23 -o ServerAliveInterval=5 -v
+-o ServerAliveInternal=5
 
 Note:  
 The authenticity of host '34.209.213.255 (34.209.213.255)' can't be established.
@@ -81,6 +83,9 @@ In order for your project to be reviewed, the grader needs to be able to log in 
     i.  add the below line of code after root ALL=(ALL:ALL) ALL grader ALL=(ALL:ALL) ALL and save it (ctrl-X , then Y and Enter)
     Your new user(grader) is able to execute commands with administrative privileges. ( for example - sudo anycommand)
     ii.  You can check the grader entry by entering the command: sudo cat /etc/sudoers
+    iii.  Reload SSH to apply new settings
+          $ reload ssh
+          (use "sudo apt get upstart" if needed)
 
     
 8. Create an SSH key pair for grader using the ssh-keygen tool on your local machine.
@@ -90,14 +95,18 @@ In order for your project to be reviewed, the grader needs to be able to log in 
   
 
     3.  Login into the grader account using on your virtual machine:
-        ubuntu@ip-172-26-15-205:~$ su - grader
+        i. to switch to user "grader", 
+        $ su - grader
         enter password
         on successful login, you will see 
         grader@ip-172-26-15-205
         In the grader account:
-        $ mkdir .ssh
-        $ touch .ssh/authorized_keys
-        $ nano .ssh/authorized_keys
+        ii.  create .ssh foler in /home/grader
+        $ mkdir /home/grader/.ssh
+        iii.  create an empty authorized_keys file
+        $ touch /home/grader/.ssh/authorized_keys
+        iv.  paste the public keys into authroized_keys from udacity_key.rsa.pub
+        $ nano /home/grader/.ssh/authorized_keys
         
         copy and paste identification key from local machine .ssh/udacity_key.rsa.pub file
         to grader's .ssh/authorized_keys file and save it.
