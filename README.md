@@ -132,9 +132,44 @@ Prepare to deploy your project.
     and choose UTC from the options
     
 10. Install and configure Apache to serve a Python mod_wsgi application.
-    i.  Install Apache sudo apt-get install apache2
-    ii.  Install mod_wsgi with sudo apt-get install python-setuptools libapache2-mod-wsgi
-    iii.  Restart with sudo service apache2 restart
+    i.  Install Apache using  
+        sudo apt-get install apache2
+        note:  you will see the apache ubuntu default page when you type in the public ip address 
+            34.214.197.23 into a url page.  
+    ii.  Install mod_wsgi using 
+        sudo apt-get install python-setuptools libapache2-mod-wsgi
+        
+    iii.  Configure apache to handle requests using the WSGI module by ending the /etc/apache2/sites-enabled/000-default.conf file.  
+    iv.  add "WSGIScriptAlias / /var/www/html/myapp.wsgi" before the closing black of  Virtual Host.
+        if you get an error, use command "echo "ServerName localhost" | sudo tee /etc/apache2/conf-available/fqdn.conf && sudo a2enconf fqdn" in your terminal
+    
+    v.  Restart with sudo service apache2 restart
+    
+    vi.  Test to verify Apache configurations work by writing a basic WSGI application.
+         1.  Edit the wsgi file
+             sudo nano /var/www/html/myapp.wsgi
+         2.  write a simple appliation
+         
+    def application(environ, start_response):
+       status = '200 OK'
+       output = 'Hello World!'
+
+       response_headers = [('Content-type', 'text/plain'), ('Content-Length', str(len(output)))]
+       start_response(status, response_headers)
+
+       return [output]
+       
+  Note:  Check http://http://34.214.197.23/ to see the Hello World! application run.  
+  
+  
+ 
+ Install Git
+    1.  Install git 
+        sudo apt-get install git
+    2. Setup git
+        git config --global user.name "username"
+        git config --global user.email "email@domain.com"
+    Note:  Check configurations with "git config --list"
    
 
 If you built your project with Python 3, you will need to install the Python 3 mod_wsgi package on your server: sudo apt-get install libapache2-mod-wsgi-py3.
