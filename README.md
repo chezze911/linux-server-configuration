@@ -312,15 +312,15 @@ Install PostgreSQL
     2.  Install PostgreSQL
         sudo apt-get install postgresql postgresql-contrib
     3.  update the create_engine line in catalog_database_setup.py, catalog_project.py and catalog_lotsofitems.py
-        python engine = create_engine('postgresql://catalog:catalog-pw@localhost/catalog')
-    4.  move the catalog_project.py file to init.py
+        engine = create_engine('postgresql://catalog:password@localhost/catalog')
+    4.  move the catalog_project.py file into init.py
         mv catalog_project.py init.py
     5.  Change to default user postgres
-        sudo su - postgre
+        sudo su - postgres
     6.  Connect to the system
         psql
     7.  Create user catalog
-        CREATE USER catalog WITH PASSWORD 'catalog-password';
+        CREATE USER catalog WITH PASSWORD 'password';
     8. check lists of roles
         \du
     9.  Allow user to create database
@@ -371,6 +371,16 @@ If you built your project with Python 3, you will need to install the Python 3 m
             postgre=# \q
             postgre=# exit
        
+  
+  Run the Application
+  1.  Create the database schema
+        python catalog_database_setup.py
+        python catalog_lotsofitems.py
+  2.  Restart Apache
+        sudo service apache2 restart
+  3.  in the directory /var/www/FlaskApp/FlaskApp/catalog
+        python init.py
+  4.  add the ip address(http://34.214.197.23) into your URL
  
 
 Do not allow remote connections
