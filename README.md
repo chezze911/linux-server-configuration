@@ -279,33 +279,78 @@ Prepare to deploy your project.
     2.  Use cd /var/www to move into the directory
     3.  Create the app directory 
         sudo mkdir FlaskApp
-    4.  Move inside that directory
-        cd FlaskApp
     5.  Clone the Catalog App to the virtual machine
-        git clone https://github.com/chezze911/FSND-Virtual-Machine-2.git
-    6.  Rename the project name 
-        sudo mv ./FSND-Virtual-Machine-2 ./FlaskApp
+        grader@ip-172-26-3-24:~$ git clone https://github.com/chezze911/FSND-Virtual-Machine-2.git
+    6.  Move catalog project to /var/www/FlaskApp/FlaskApp directory
+        sudo mv FSND-Virtual-Machine-2/vagrant/catalog /var/www/FlaskApp/FlaskApp
     7.  Move to the inner FlaskApp directory
         cd FlaskApp
-    8.  Rename catalog_project.py to __init__.py
-        sudo mv catalog_project.py __init__.py . 
-  ** FINISHED UP TO HERE **  9. Edit catalog_database_setup.py, __init__.py, and catalog_lotsofitems.py and change
-        engine = create_engine('sqlite://toyshop.db') to
-        engine = create_engine('postgresql:///catalog:password@localhost/catalog')
-    10.  Install pip
-        sudo apt-get install python-pip
-    11. Install dependencies
-        sudo pip install -r requirements.txt
-    12. Install psycopg2
-        sudo apt-get -qqy install postgresql python-psycopg2
-    13.  Create a database schema
-        sudo python database_setup.py
+    8. folder structure should be:
+        grader@ip-172-26-3-24: /var/www/FlaskApp/FlaskApp$ ls
+        within catalog(catalog_client_secrets.json     fb_client_secrets.json      catalog_lotsofitems.py      templates
+        catalog_database_setup.py)    __init__.py      static      venv
+    10.  Install other Packages
+        i. sudo apt-get install python-pip
+        ii.  source venv/bin/activate
+        iii.  sudo pip install httplib2
+        iv.  sudo pip install requests
+        v.  sudo pip install --upgrade oauth2client
+        vi. sudo pip install sqlalchemy
+        vii.  sudo pip install Flask-SQLAlchemy
+        viii.  sudo pip install flask-seasurf
+        
  
         
     sudo mv FSND-Virtual-Machine-2/vagrant/catalog /var/www/catalog/catalog/
     
+    
+    
    
-
+Install PostgreSQL
+    1.  Intall Python PostgreSQL adapter psycopg
+        sudo apt-get install python-psycopg2
+    2.  Install PostgreSQL
+        sudo apt-get install postgresql postgresql-contrib
+    3.  update the create_engine line in catalog_database_setup.py, catalog_project.py and catalog_lotsofitems.py
+        python engine = create_engine('postgresql://catalog:catalog-pw@localhost/catalog')
+    4.  move the catalog_project.py file to init.py
+        mv catalog_project.py init.py
+    5.  Change to default user postgres
+        sudo su - postgre
+    6.  Connect to the system
+        psql
+    7.  Create user catalog
+        CREATE USER catalog WITH PASSWORD 'catalog-password';
+    8. check lists of roles
+        \du
+    9.  Allow user to create database
+        ALTER USER catalog CREATEDB;
+    10. create database
+        CREATE DATABASE catalog WITH OWNER catalog;
+    11. connect to the database
+        \c catalog
+    12. Revoke all rights
+        REVOKE ALL ON SCHEMA public FROM public;
+    13.  Grant access to the catalog
+        GRANT ALL ON SCHEMA public TO catalog;
+    14.  When catalog_database_setup.py is executed, you can login to psql and check the tables as followed
+        i.  Connect to the database
+            \c catalog
+        ii.  To see the tables in the schema
+            \dt
+        iii.  To see a single table
+            \d [tablename]
+         iv.  To see entries/data in a table
+            select * from [tablename];
+         v.  To drop the table
+            drop table [tablename];
+         vi.  exit PostgreSQL:
+            \q
+            exit
+         vii.  restart
+              sudo service postgresql restart
+      
+        
 If you built your project with Python 3, you will need to install the Python 3 mod_wsgi package on your server: sudo apt-get install libapache2-mod-wsgi-py3.
 11. Install and configure PostgreSQL:
     i.  sudo apt-get install postgresql
