@@ -376,6 +376,24 @@ If you built your project with Python 3, you will need to install the Python 3 m
   1.  Create the database schema
         python catalog_database_setup.py
         python catalog_lotsofitems.py
+        error in catalog_lotsofitems.py
+        sqlalchemy.exc.DataError: (psycopg2.DataError) value too long for type character varying(250)
+ [SQL: 'INSERT INTO catalog_item (name, description, price, catalog_id, user_id) VALUES (%(name)s, %(description)s, %(price)s, %(catalog_id)s, %(user_id)s) RETURNING catalog_item.id'] [parameters: {'price': '$200', 'description': 'This project lets you experience multiple 3D environments from the Udacity VR program. You will download the Udacity VR app and run it inside of your ... (35 characters truncated) ...  the headset, you will walkaround an apartment and island from the VR Nanodegree and see demonstrations of various VR techniques you will soon learn.', 'user_id': 1, 'catalog_id': 6, 'name': 'Project 0: What is the Code?'}] (Background on this error at: http://sqlalche.me/e/9h9h)
+ 
+ delete and make description shorter.  
+ 
+ NOTE:
+ 
+ Go into psql and change TABLE catalog_item COLUMN description TYPE character varying(250)
+ to an integer to fix errors above.
+ 
+ resources:
+ https://dba.stackexchange.com/questions/159380/how-do-i-correct-this-value-too-long-for-type-character-varying5
+ 
+ 
+        Note: if you run into ImportError: No module named sqlalchemy issue,
+              pip install Flask-SQLAlchemy
+              check installed versions with: pip freeze
   2.  Restart Apache
         sudo service apache2 restart
   3.  in the directory /var/www/FlaskApp/FlaskApp/catalog
