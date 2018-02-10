@@ -472,7 +472,7 @@ ValueError: Expecting property name: line 1 column 445 (char 444)
 }
 
 grader@ip-172-26-3-24:/var/www/FlaskApp/FlaskApp/catalog$ python init.py
-After running python init.py:
+After running python __init__.py:
 
 Traceback (most recent call last):
   File "init.py", line 18, in <module>
