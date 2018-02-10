@@ -387,8 +387,10 @@ If you built your project with Python 3, you will need to install the Python 3 m
  Go into psql and change TABLE catalog_item COLUMN description TYPE character varying(250)
  to an integer to fix errors above.
  
+ FIX:
+ ALTER TABLE public.catalog_item ALTER COLUMN description TYPE varchar (2500);
+ 
  resources:
- https://dba.stackexchange.com/questions/159380/how-do-i-correct-this-value-too-long-for-type-character-varying5
  
  
         Note: if you run into ImportError: No module named sqlalchemy issue,
