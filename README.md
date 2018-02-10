@@ -380,17 +380,15 @@ If you built your project with Python 3, you will need to install the Python 3 m
         sqlalchemy.exc.DataError: (psycopg2.DataError) value too long for type character varying(250)
  [SQL: 'INSERT INTO catalog_item (name, description, price, catalog_id, user_id) VALUES (%(name)s, %(description)s, %(price)s, %(catalog_id)s, %(user_id)s) RETURNING catalog_item.id'] [parameters: {'price': '$200', 'description': 'This project lets you experience multiple 3D environments from the Udacity VR program. You will download the Udacity VR app and run it inside of your ... (35 characters truncated) ...  the headset, you will walkaround an apartment and island from the VR Nanodegree and see demonstrations of various VR techniques you will soon learn.', 'user_id': 1, 'catalog_id': 6, 'name': 'Project 0: What is the Code?'}] (Background on this error at: http://sqlalche.me/e/9h9h)
  
- delete and make description shorter.  
- 
  NOTE:
- 
  Go into psql and change TABLE catalog_item COLUMN description TYPE character varying(250)
- to an integer to fix errors above.
+ and increase the number of characters to 2500.
  
  FIX:
  ALTER TABLE public.catalog_item ALTER COLUMN description TYPE varchar (2500);
  
  resources:
+ https://discussions.udacity.com/t/reset-postgresql-database/230592/3
  
  
         Note: if you run into ImportError: No module named sqlalchemy issue,
@@ -400,36 +398,40 @@ If you built your project with Python 3, you will need to install the Python 3 m
         sudo service apache2 restart
   3.  in the directory /var/www/FlaskApp/FlaskApp/catalog
         python init.py
-  4.  add the ip address(http://34.214.197.23) into your URL
+  4.  add the ip address(http://34.214.197.23/) into your URL
+  
+  
+  OAUTH Login
+  1.  Go to http://www.hcidata.info/host2ip.cgi to get the host name of your public IP address (34.214.197.23).
+      IP Address (34.214.197.23) = Host Name (ec2-34-214-197-23.us-west-2.compute.amazonaws.com)
+  2.  Add this hostname below ServerAdmin (ServerAlias ec2-34-214-197-23.us-west-2.compute.amazonaws.com)
+      sudo nano /etc/apache2/sites-available/catalog.conf
+  3.  enable the virtual host
+      sudo a2ensite catalog
+  4.  restart apacheserver
+      sudo service apache2 restart
+  5.  Google Authorization Steps:
+        i.  Go to console.developer
+        ii.  click on Credentials, then edit
+        iii.  Add your hostname (http://ec2-34-214-197-23.us-west-2.compute.amazonaws.com) and public IP address
+              (http://34.214.197.23) to Authorized JavaScript origins.
+        iv.  Add hostname (http://ec2-34-214-197-23.us-west-2.compute.amazonaws.com/oauth2callback) to Authorized redirect URIs.
+        v.  Update client_secrets.json file by adding hostname and public IP address
+ 6.  Facebook Authorizaiton Steps:
+        i.  go to developer.facebook
+        ii.  Open your application and click on Facebook Login and then settings
+        iii.  Add your hostname and public IP address to Valid OAuth redirect URIs and save
+        iv.  Update your fb_client_secret.json file by adding hostname and public IP address
+ 
+  
+      
+      
  
 
-Do not allow remote connections
-Create a new database user named catalog that has limited permissions to your catalog application database.
-12. Install git.
 
-    v.  From grader@ip-172-26-3-24:~$ 
-        Clone the Catalog App to the virtual machine
-        git clone https://github.com/chezze911/FSND-Virtual-Machine-2
-    vi.  rename the project with the command sudo mv ./FSND-Virtual-Machine-2 ./FlaskApp
-    vii.  Get into the FlaskApp directory with cd FlaskApp/vagrant/catalog
-    
-    viii.  rename website.py to __init__.py with sudo mv website.py __init__.py
     
     
-    
-    **finished up to here**
-    
-    viiii. edit database_setup.py, website.py and functions_helper.py and change
-            engine = create_engine('sqlite:///toyshop.db') to 
-            engine = create_engine('postgresql://catalog:password@localhost/catalog')
-    x.  Install pip with sudo apt-get install python-pip
-    xi.  sudo pip install -r requirements.txt to install dependencies
-    xii.  sudo apt-get -qqy install postgresql python-psycopg2 to install psycopg2
-    xiii.  Create a database schema with 
-            sudo python database_setup.py
-    
-    
-Configure and Enable a New Virtual Host
+
 
 
 
