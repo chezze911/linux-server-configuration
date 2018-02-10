@@ -440,7 +440,20 @@ If you built your project with Python 3, you will need to install the Python 3 m
         iv.  Add hostname (http://ec2-34-214-197-23.us-west-2.compute.amazonaws.com/oauth2callback) 
              to Authorized redirect URIs.
         v.  Update catalog_client_secrets.json file by adding hostname and public IP address
-        
+
+grader@ip-172-26-3-24:/var/www/FlaskApp/FlaskApp/catalog$ python init.py
+Traceback (most recent call last):
+  File "init.py", line 18, in <module>
+    open('catalog_client_secrets.json', 'r').read())['web']['client_id']
+  File "/usr/lib/python2.7/json/__init__.py", line 339, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python2.7/json/decoder.py", line 364, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python2.7/json/decoder.py", line 380, in raw_decode
+    obj, end = self.scan_once(s, idx)
+ValueError: Expecting property name: line 1 column 445 (char 444)
+
+
  6.  Facebook Authorizaiton Steps:
         i.  Go to https://developers.facebook.com/
         ii.  Open your item catalog application from the drop down menu of my apps and click on Facebook Login 
@@ -458,7 +471,19 @@ If you built your project with Python 3, you will need to install the Python 3 m
   }
 }
 
+grader@ip-172-26-3-24:/var/www/FlaskApp/FlaskApp/catalog$ python init.py
+After running python init.py:
 
+Traceback (most recent call last):
+  File "init.py", line 18, in <module>
+    open('catalog_client_secrets.json', 'r').read())['web']['client_id']
+  File "/usr/lib/python2.7/json/__init__.py", line 339, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python2.7/json/decoder.py", line 364, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python2.7/json/decoder.py", line 380, in raw_decode
+    obj, end = self.scan_once(s, idx)
+ValueError: Expecting property name: line 1 column 492 (char 491)
  
   
       
