@@ -406,21 +406,45 @@ If you built your project with Python 3, you will need to install the Python 3 m
       IP Address (34.214.197.23) = Host Name (ec2-34-214-197-23.us-west-2.compute.amazonaws.com)
   2.  Add this hostname below ServerAdmin (ServerAlias ec2-34-214-197-23.us-west-2.compute.amazonaws.com)
       sudo nano /etc/apache2/sites-available/catalog.conf
+      
+      <VirtualHost *:80>
+        ServerName 34.214.197.23
+        ServerAdmin admin@34.214.197.23
+        ServerAlias ec2-34-214-197-23.us-west-2.compute.amazonaws.com  
+        WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
+        <Directory /var/www/FlaskApp/FlaskApp/catalog>
+            Order allow,deny
+            Allow from all
+        </Directory>
+        Alias /static /var/www/FlaskApp/FlaskApp/catalog/static
+        <Directory /var/www/FlaskApp/FlaskApp/catalog/static/>
+            Order allow,deny
+            Allow from all
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        LogLevel warn
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+
+
   3.  enable the virtual host
       sudo a2ensite catalog
   4.  restart apacheserver
       sudo service apache2 restart
   5.  Google Authorization Steps:
-        i.  Go to console.developer
-        ii.  click on Credentials, then edit
+        i.  Go to https://console.developer.google.com
+        ii.  Choose your item catalog app and then click on Credentials, and then edit
         iii.  Add your hostname (http://ec2-34-214-197-23.us-west-2.compute.amazonaws.com) and public IP address
               (http://34.214.197.23) to Authorized JavaScript origins.
-        iv.  Add hostname (http://ec2-34-214-197-23.us-west-2.compute.amazonaws.com/oauth2callback) to Authorized redirect URIs.
+        iv.  Add hostname (http://ec2-34-214-197-23.us-west-2.compute.amazonaws.com/oauth2callback) 
+             to Authorized redirect URIs.
         v.  Update client_secrets.json file by adding hostname and public IP address
  6.  Facebook Authorizaiton Steps:
-        i.  go to developer.facebook
-        ii.  Open your application and click on Facebook Login and then settings
-        iii.  Add your hostname and public IP address to Valid OAuth redirect URIs and save
+        i.  Go to https://developers.facebook.com/
+        ii.  Open your item catalog application from the drop down menu of my apps and click on Facebook Login 
+             and then settings
+        iii.  Add your hostname and public IP address to Valid OAuth redirect URIs and Save Changes
         iv.  Update your fb_client_secret.json file by adding hostname and public IP address
  
   
