@@ -439,13 +439,26 @@ If you built your project with Python 3, you will need to install the Python 3 m
               (http://34.214.197.23) to Authorized JavaScript origins.
         iv.  Add hostname (http://ec2-34-214-197-23.us-west-2.compute.amazonaws.com/oauth2callback) 
              to Authorized redirect URIs.
-        v.  Update client_secrets.json file by adding hostname and public IP address
+        v.  Update catalog_client_secrets.json file by adding hostname and public IP address
+        
  6.  Facebook Authorizaiton Steps:
         i.  Go to https://developers.facebook.com/
         ii.  Open your item catalog application from the drop down menu of my apps and click on Facebook Login 
              and then settings
         iii.  Add your hostname and public IP address to Valid OAuth redirect URIs and Save Changes
         iv.  Update your fb_client_secret.json file by adding hostname and public IP address
+        
+        file: fb_client_secrets.json
+        {
+  "web": {
+    "app_id": "1673077866333201",
+    "app_secret": "f20f65de14ce19d39de107e6edf953e1",
+    "hostname": "http://ec2-35-165-147-241.us-west-2.compute.amazonaws.com",
+    "public_ip_address": "http://35.165.147.241"
+  }
+}
+
+
  
   
       
