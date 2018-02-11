@@ -139,7 +139,7 @@ Prepare to deploy your project.
     ii.  Install mod_wsgi using 
         sudo apt-get install python-setuptools libapache2-mod-wsgi
         
-    iii.  Configure apache to handle requests using the WSGI module by ending the /etc/apache2/sites-enabled/000-default.conf file.  
+    iii.  Configure apache to handle requests using the WSGI module by editng the /etc/apache2/sites-enabled/000-default.conf file.  
     iv.  add "WSGIScriptAlias / /var/www/html/myapp.wsgi" before the closing black of  Virtual Host.
         if you get an error, use command "echo "ServerName localhost" | sudo tee /etc/apache2/conf-available/fqdn.conf && sudo a2enconf fqdn" in your terminal
     
@@ -397,7 +397,56 @@ If you built your project with Python 3, you will need to install the Python 3 m
   2.  Restart Apache
         sudo service apache2 restart
   3.  in the directory /var/www/FlaskApp/FlaskApp/catalog
-        python init.py
+        python __init__.py
+        
+        Note: Might run into issues related to /etc/apache2/sites-available/FlaskApp.conf
+        WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
+        <Directory /var/www/FlaskApp/FlaskApp/>
+        Alias /static /var/www/FlaskApp/FlaskApp/static
+        <Directory /var/www/FlaskApp/FlaskApp/static/>
+  
+        - Change the path /var/www/FlaskApp/flaskapp.wsgi to /var/www/catalog/catalog.wsgi in all lines
+        Should look like this:
+        <VirtualHost *:80>
+        ServerName 34.214.197.23
+        ServerAdmin admin@34.214.197.23
+        ServerAlias ec2-34-214-197-23.us-west-2.compute.amazonaws.com
+        WSGIScriptAlias / /var/www/catalog/catalog.wsgi
+        <Directory /var/www/catalog/catalog.wsgi>
+            Order allow,deny
+            Allow from all
+        </Directory>
+        Alias /static /var/www/catalog/catalog.wsgi            
+        <Directory /var/www/catalog/catalog.wsgi>
+            Order allow,deny
+            Allow from all
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        LogLevel warn
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+        - related to catalog_client_secrets.json and fb_client_secrets.json files.  
+          Give Absolute path to these files.
+        - Edit __init__.py file
+          Change Client_ID = json.loads( open('catalog_client_secrets.json', 'r'). read())['web']['client_id']
+          open(r'/var/www/FlaskApp/FlaskApp/catalog/catalog_client_secrets.json', 'r').read())['web']['client_id']'''
+          Similarly for fb_client_secrets.json file
+        - Check last 10 errors in /var/log/apache2/error.log files
+          sudo tail -10 /var/log/apache2/error.log
+          Error:
+          grader@ip-172-26-3-24:/var/www/FlaskApp/FlaskApp/catalog$ sudo tail -10 /var/log/apache2/error.log
+[Sun Feb 11 00:24:51.566297 2018] [wsgi:warn] [pid 15969:tid 140132744648576] mod_wsgi: Compiled for Python/2.7.11.
+[Sun Feb 11 00:24:51.566329 2018] [wsgi:warn] [pid 15969:tid 140132744648576] mod_wsgi: Runtime using Python/2.7.12.
+[Sun Feb 11 00:24:51.566671 2018] [mpm_event:notice] [pid 15969:tid 140132744648576] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
+[Sun Feb 11 00:24:51.566682 2018] [core:notice] [pid 15969:tid 140132744648576] AH00094: Command line: '/usr/sbin/apache2'
+[Sun Feb 11 01:15:34.402512 2018] [mpm_event:notice] [pid 15969:tid 140132744648576] AH00491: caught SIGTERM, shutting down
+[Sun Feb 11 01:15:34.459332 2018] [wsgi:warn] [pid 16421:tid 140128246941568] mod_wsgi: Compiled for Python/2.7.11.
+[Sun Feb 11 01:15:34.459362 2018] [wsgi:warn] [pid 16421:tid 140128246941568] mod_wsgi: Runtime using Python/2.7.12.
+[Sun Feb 11 01:15:34.459688 2018] [mpm_event:notice] [pid 16421:tid 140128246941568] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
+[Sun Feb 11 01:15:34.459702 2018] [core:notice] [pid 16421:tid 140128246941568] AH00094: Command line: '/usr/sbin/apache2'
+[Sun Feb 11 01:17:07.621369 2018] [wsgi:error] [pid 16425:tid 140128151066368] [client 146.74.94.82:54748] Target WSGI script not found or unable to stat: /var/www/FlaskApp/flaskapp.wsgi
+        - Restart apache2 server
+        
   4.  add the ip address(http://34.214.197.23/) into your URL
   
   
