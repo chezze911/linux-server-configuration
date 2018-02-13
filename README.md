@@ -197,7 +197,7 @@ Prepare to deploy your project.
                 app = Flask(__name__)
                 @app.route("/")
                 def hello():
-                    return "Hello, everyone!"
+                    return "Hello, I love Digital Ocean!"
                 if __name__ == "__main__":
                 app.run()
     3.  
@@ -400,6 +400,7 @@ If you built your project with Python 3, you will need to install the Python 3 m
         python __init__.py
         
         Note: Might run into issues related to /etc/apache2/sites-available/FlaskApp.conf
+        
         WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
         <Directory /var/www/FlaskApp/FlaskApp/>
         Alias /static /var/www/FlaskApp/FlaskApp/static
@@ -445,11 +446,154 @@ If you built your project with Python 3, you will need to install the Python 3 m
 [Sun Feb 11 01:15:34.459688 2018] [mpm_event:notice] [pid 16421:tid 140128246941568] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
 [Sun Feb 11 01:15:34.459702 2018] [core:notice] [pid 16421:tid 140128246941568] AH00094: Command line: '/usr/sbin/apache2'
 [Sun Feb 11 01:17:07.621369 2018] [wsgi:error] [pid 16425:tid 140128151066368] [client 146.74.94.82:54748] Target WSGI script not found or unable to stat: /var/www/FlaskApp/flaskapp.wsgi
+Resources:
+https://discussions.udacity.com/t/client-secret-json-not-found-error/34070/2
+
+Change 
+oauth_flow = flow_from_clientsecrets('catalog_client_secrets.json', scope='')
+to
+oauth_flow = flow_from_clientsecrets(r'/var/www/FlaskApp/FlaskApp/catalog/catalog_client_secrets.json', scope='')
         - Restart apache2 server
+        sudo service apache2 restart
         
+grader@ip-172-26-3-24:/var/www/FlaskApp/FlaskApp/catalog$ sudo tail -10 /var/log/apache2/error.log
+[Mon Feb 12 06:25:01.606152 2018] [wsgi:warn] [pid 16421:tid 140128246941568] mod_wsgi: Compiled for Python/2.7.11.
+[Mon Feb 12 06:25:01.606687 2018] [wsgi:warn] [pid 16421:tid 140128246941568] mod_wsgi: Runtime using Python/2.7.12.
+[Mon Feb 12 06:25:01.606736 2018] [mpm_event:notice] [pid 16421:tid 140128246941568] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
+[Mon Feb 12 06:25:01.606740 2018] [core:notice] [pid 16421:tid 140128246941568] AH00094: Command line: '/usr/sbin/apache2'
+[Tue Feb 13 00:07:51.612702 2018] [mpm_event:notice] [pid 16421:tid 140128246941568] AH00491: caught SIGTERM, shutting down
+[Tue Feb 13 00:07:52.625190 2018] [wsgi:warn] [pid 17445:tid 139905621985152] mod_wsgi: Compiled for Python/2.7.11.
+[Tue Feb 13 00:07:52.625231 2018] [wsgi:warn] [pid 17445:tid 139905621985152] mod_wsgi: Runtime using Python/2.7.12.
+[Tue Feb 13 00:07:52.625606 2018] [mpm_event:notice] [pid 17445:tid 139905621985152] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
+[Tue Feb 13 00:07:52.625615 2018] [core:notice] [pid 17445:tid 139905621985152] AH00094: Command line: '/usr/sbin/apache2'
+
+Fix: 
+Delete ServerAlias line and ServerNAme line in File: /etc/apache2/sites-available/catalog.conf
+sudo nano /etc/apache2/sites-available/catalog.conf
+
+
+<VirtualHost *:80>
+        ServerAdmin admin@34.214.197.23
+        WSGIScriptAlias / /var/www/catalog/catalog.wsgi
+        <Directory /var/www/catalog/catalog.wsgi>
+            Order allow,deny
+            Allow from all
+        </Directory>
+        Alias /static /var/www/catalog/catalog.wsgi
+        <Directory /var/www/catalog/catalog.wsgi>
+            Order allow,deny
+            Allow from all
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        LogLevel warn
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+
+
+My current catalog.wsgi file:
+
+#!/usr/bin/python
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/FlaskApp/")
+
+from FlaskApp import app as application
+application.secret_key = 'Add your secret key'
+
+change catalog.wsgi file path to /var/www/catalog as followed:
+#!/usr/bin/python
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/catalog/")
+
+from FlaskApp import app as application
+application.secret_key = 'Add your secret key'
+
+
+To disable the default site:
+sudo a2dissite 000-default
+
+Reload apache2 service:
+sudo service apache2 reload
+
+
+Resources:
+https://discussions.udacity.com/t/issue-getting-my-application-to-run-on-linux-server/473507/60
+https://manpages.debian.org/jessie/apache2/a2ensite.8.en.html
+
   4.  add the ip address(http://34.214.197.23/) into your URL
   
-  
+grader@ip-172-26-3-24:~$ sudo tail -f /var/log/apache2/error.log
+[Tue Feb 13 00:34:07.419808 2018] [mpm_event:notice] [pid 17445:tid 139905621985152] AH00491: caught SIGTERM, shutting down
+[Tue Feb 13 00:34:08.421764 2018] [wsgi:warn] [pid 18063:tid 140533540386688] mod_wsgi: Compiled for Python/2.7.11.
+[Tue Feb 13 00:34:08.421793 2018] [wsgi:warn] [pid 18063:tid 140533540386688] mod_wsgi: Runtime using Python/2.7.12.
+[Tue Feb 13 00:34:08.422160 2018] [mpm_event:notice] [pid 18063:tid 140533540386688] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
+[Tue Feb 13 00:34:08.422174 2018] [core:notice] [pid 18063:tid 140533540386688] AH00094: Command line: '/usr/sbin/apache2'
+[Tue Feb 13 00:43:13.950517 2018] [mpm_event:notice] [pid 18063:tid 140533540386688] AH00493: SIGUSR1 received.  Doing graceful restart
+[Tue Feb 13 00:43:13.970210 2018] [wsgi:warn] [pid 18063:tid 140533540386688] mod_wsgi: Compiled for Python/2.7.11.
+[Tue Feb 13 00:43:13.970222 2018] [wsgi:warn] [pid 18063:tid 140533540386688] mod_wsgi: Runtime using Python/2.7.12.
+[Tue Feb 13 00:43:13.970254 2018] [mpm_event:notice] [pid 18063:tid 140533540386688] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
+[Tue Feb 13 00:43:13.970259 2018] [core:notice] [pid 18063:tid 140533540386688] AH00094: Command line: '/usr/sbin/apache2'
+
+FIX: file: /etc/apache2/sites-available/FlaskApp.conf
+delete lines ServerName and ServerAlias
+
+Updated version:
+<VirtualHost *:80>
+                ServerAdmin admin@34.214.197.23
+                WSGIScriptAlias / /var/www/FlaskApp/FlaskApp.wsgi
+                <Directory /var/www/FlaskApp/FlaskApp.wsgi>
+                        Order allow,deny
+                        Allow from all
+                </Directory>
+                Alias /static /var/www/FlaskApp/FlaskApp/catalog/static
+                <Directory /var/www/FlaskApp/FlaskApp/catalog/static>
+                        Order allow,deny
+                        Allow from all
+                </Directory>
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                LogLevel warn
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+grader@ip-172-26-3-24:/var/www/FlaskApp/FlaskApp/catalog$ sudo tail -f /var/log/apache2/error.log
+[Tue Feb 13 01:49:28.083348 2018] [wsgi:warn] [pid 2083:tid 139809771669376] mod_wsgi: Compiled for Python/2.7.11.
+[Tue Feb 13 01:49:28.083358 2018] [wsgi:warn] [pid 2083:tid 139809771669376] mod_wsgi: Runtime using Python/2.7.12.
+[Tue Feb 13 01:49:28.083388 2018] [mpm_event:notice] [pid 2083:tid 139809771669376] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
+[Tue Feb 13 01:49:28.083392 2018] [core:notice] [pid 2083:tid 139809771669376] AH00094: Command line: '/usr/sbin/apache2'
+[Tue Feb 13 01:49:59.203306 2018] [wsgi:error] [pid 2304:tid 139809498556160] [client 146.74.94.82:58900] mod_wsgi (pid=2304): Target WSGI script '/var/www/catalog/catalog.wsgi' cannot be loaded as Python module.
+[Tue Feb 13 01:49:59.203333 2018] [wsgi:error] [pid 2304:tid 139809498556160] [client 146.74.94.82:58900] mod_wsgi (pid=2304): Exception occurred processing WSGI script '/var/www/catalog/catalog.wsgi'.
+[Tue Feb 13 01:49:59.203347 2018] [wsgi:error] [pid 2304:tid 139809498556160] [client 146.74.94.82:58900] Traceback (most recent call last):
+[Tue Feb 13 01:49:59.203360 2018] [wsgi:error] [pid 2304:tid 139809498556160] [client 146.74.94.82:58900]   File "/var/www/catalog/catalog.wsgi", line 7, in <module>
+[Tue Feb 13 01:49:59.203397 2018] [wsgi:error] [pid 2304:tid 139809498556160] [client 146.74.94.82:58900]     from FlaskApp import app as application
+[Tue Feb 13 01:49:59.203411 2018] [wsgi:error] [pid 2304:tid 139809498556160] [client 146.74.94.82:58900] ImportError: No module named FlaskApp
+^C
+
+FIX:
+grader@ip-172-26-3-24:/var/www/catalog$ sudo nano catalog.wsgi
+
+Note:
+you need to change the following line in catalog.wsgi
+this line "from FlaskApp import app as application"
+instead of FlaskApp change it to catalog
+
+from catalog import app as application
+
+because it refers to the directory which is now named catalog
+
+- restart apache2 and check error logs
+
+on http://34.214.197.23/,
+output:
+Hello World again!
+
+Resources:
+https://discussions.udacity.com/t/importerror-no-module-named-flaskapp/304285/3
+
+
   OAUTH Login
   1.  Go to http://www.hcidata.info/host2ip.cgi to get the host name of your public IP address (34.214.197.23).
       IP Address (34.214.197.23) = Host Name (ec2-34-214-197-23.us-west-2.compute.amazonaws.com)
