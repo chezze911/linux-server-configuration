@@ -167,8 +167,9 @@ $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200
 10. Install and configure Apache to serve a Python mod_wsgi application.
     i.  Install Apache using  
         sudo apt-get install apache2
-        Note: you will see the apache ubuntu default page when you type in the public ip address 
-            52.33.99.231 into a url page.  
+        Note: you will see the apache ubuntu default page when you type in the public ip address into a url page.
+         52.33.99.231
+         
     ii.  Install mod_wsgi using 
         sudo apt-get install python-setuptools libapache2-mod-wsgi
         
@@ -210,13 +211,13 @@ $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200
     Note:  Check configurations with "git config --list"
     
     
- ** UP TO HERE **
- Deploy Flask Application (6 steps)
+ ''' UP TO HERE '''
+ Deploy Flask Application
     1.  
         i. Install python-dev because mod-wsgi is already installed
-            sudo apt-get install python-dev
+            '''sudo apt-get install python-dev'''
         ii. enable mod_wsgi
-            sudo a2enmod wsgi
+            '''sudo a2enmod wsgi'''
     2.  
         i.  move into the /var/www directory
             1.  create the app directory structure
