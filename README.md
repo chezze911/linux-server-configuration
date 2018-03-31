@@ -18,111 +18,114 @@ Do you want to add the certificate from the life "LightsaleDefaultPrivateKey-us-
 keychain login
 
 - an error occured.  unable to import the item.
+```
+1.  mv ~/Downloads/LightsailDefaultPrivateKey-us-west-2.pem ~/.ssh/
+2.  chmod 600 ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem
+3.  ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@52.33.99.231
+```
 
-i.      mv ~/Downloads/LightsailDefaultPrivateKey-us-west-2.pem ~/.ssh/
-ii.     chmod 600 ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem
-iii.    ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@52.33.99.231
-
-ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@52.33.99.231
 
 private server:
 ubuntu@ip-172-26-13-140
 
-Give grader access.
+1.  Give grader access.
 In order for your project to be reviewed, the grader needs to be able to log in to your server.
 
-1. Create a new user account named grader.
-    1.  sudo adduser grader
-    i.  To check the User "grader" information:
-        sudo apt-get install finger
-        finger grader
-        (provides additional information(login , directory, name, shell, etc) of the user named Udacity)
+   1. Create a new user account named grader.
+``` sudo adduser grader ```
+   2. To check the User "grader" information:
+   ```sudo apt-get install finger```
+   ```finger grader```
+     (provides additional information(login , directory, name, shell, etc) of the user named Udacity)
      
 
 2. Give grader the permission to sudo.
-    1.  sudo visudo (edit the sudoers file . To save, use sudo visudo to edit the sudoers file otherwise file will not be saved)
-    i.  add the below line of code after root ALL=(ALL:ALL) ALL 
+    ```1.  sudo visudo```
+    (edit the sudoers file . To save, use sudo visudo to edit the sudoers file otherwise file will not be saved)
+    2.  add the below line of code after root ALL=(ALL:ALL) ALL 
     grader ALL=(ALL:ALL) ALL and save it (ctrl-X , then Y and Enter) Note: tab space between grader and ALL.
     Your new user(grader) is able to execute commands with administrative privileges. ( for example - sudo anycommand)
-    ii.  You can check the grader entry by entering the command: sudo cat /etc/sudoers
-    iii.  Reload SSH to apply new settings
-          $ reload ssh
-          (use command "sudo apt get upstart" if needed)
+    3.  You can check the grader entry by entering the command: sudo cat /etc/sudoers
+    4.  Reload SSH to apply new settings
+          ```$ reload ssh```
+        Note: use command if needed
+        ```sudo apt get upstart``` 
 
     
 3. Create an SSH key pair for grader using the ssh-keygen tool on your local machine in a folder called Udacity.
-    1.  generate key-pair with "ssh-keygen"
+    1.  generate key-pair
+        ``` ssh-keygen``` 
 
-    2.  Save keygen file into (/home/ubuntu/.ssh/udacity_key_1.rsa) and fill in the password. 2 keys will be generated, public key (udacity_key_1.rsa.pub) and identification key(udacity_key_1.rsa).
+    2.  Save keygen file into (/home/ubuntu/.ssh/udacity_key_1.rsa) and fill in the password. public key    (udacity_key_1.rsa.pub) and identification key(udacity_key_1.rsa) will be generated.
   
 
     3.  Login into the grader account using on your virtual machine:
         i. to switch to user "grader", 
-        $ su - grader
+        ``` $ su - grader``` 
         enter password
         on successful login, you will see 
         grader@ip-172-26-13-140
         In the grader account:
         ii.  create .ssh folder in /home/grader
-        $ mkdir /home/grader/.ssh
+        ``` $ mkdir /home/grader/.ssh``` 
         iii.  create an empty authorized_keys file
-        $ touch /home/grader/.ssh/authorized_keys
+        ``` $ touch /home/grader/.ssh/authorized_keys``` 
         iv.  paste the public keys into authroized_keys from udacity_key_1.rsa.pub
-        $ nano /home/grader/.ssh/authorized_keys
+        ``` $ nano /home/grader/.ssh/authorized_keys``` 
         
         copy and paste identification key from local machine .ssh/udacity_key_1.rsa.pub file
         to grader's .ssh/authorized_keys file and save it.
-       
-       
+        
         Next, set file permissions using the following commands:
-        $ chmod 700 .ssh
-        $ chmod 644 .ssh/authorized_keys
+        ``` $ chmod 700 .ssh``` 
+        ``` $ chmod 644 .ssh/authorized_keys``` 
         
         
         Next, login to grader from another terminal by entering the following commands:
         
-        $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231
-        (Note: Enter password if one was created)
-        
-        On successful login, you will see:  grader@ip-172-26-13-140:~$ 
+        ``` $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231``` 
+        (Note: Enter password if one was created.
+        On successful login, you will see:  grader@ip-172-26-13-140:~$) 
 
 
 Secure your server.
 4. Update all currently installed packages.
-    1.  sudo apt-get update - This command will update list of packages and their versions
-    2.  sudo apt-get upgrade - This command will install the packages
-        i.  SELECT by highlighting "keep the local version currently installed" and hit ENTER
+    1. Update list of packages and their versions
+    ```$ sudo apt-get update``` 
+    
+    2. Install the packages
+    ```$ sudo apt-get upgrade``` 
+       Note:  SELECT by highlighting "keep the local version currently installed" and hit ENTER
 
 
 5.  Configure the Uncomplicated Firewall (UFW) to only allow incoming connections for SSH (port 2200), HTTP (port 80), and NTP (port 123).
     1.  check the firewall status 
-        sudo ufw status
+        ``` $ sudo ufw status``` 
     2.  block all incoming connections on all ports 
-        sudo ufw default deny incoming
+        ``` $ sudo ufw default deny incoming``` 
     3.  allow outgoing connections on all ports 
-        sudo ufw default allow outgoing
+        ``` $ sudo ufw default allow outgoing``` 
     4.  allow ssh connection 
-        sudo ufw allow ssh
+        ``` $ sudo ufw allow ssh``` 
     4.  allow incoming connection for SSH(port 2200) 
-        sudo ufw allow 2200/tcp
+        ``` $ sudo ufw allow 2200/tcp``` 
     5.  allow incoming connection for HTTP(port 80) 
-        sudo ufw allow 80/tcp
+        ``` $ sudo ufw allow 80/tcp``` 
     6.  allow incoming connection for NTP(port 123) 
-        sudo ufw allow 123/udp
+        ``` $ sudo ufw allow 123/udp``` 
     7.  check the added rules 
-        sudo ufw show added
+        ``` $ sudo ufw show added``` 
         
         should display:
         Added user rules (see 'ufw status' for running firewall):
         ufw allow 22
         ufw allow 2200/tcp
         ufw allow 80/tcp
-        ufw allow 123/udp
-        
+        ufw allow 123/udp  
     8.  enable the firewall
-        sudo ufw enable
+        ```$ sudo ufw enable``` 
     9.  check whether firewall is enable or not
-        sudo ufw status
+        ```$ sudo ufw status``` 
         
         should display:
         Status: active
@@ -136,132 +139,132 @@ To                         Action      From
 22 (v6)                    ALLOW       Anywhere (v6)             
 2200/tcp (v6)              ALLOW       Anywhere (v6)             
 80/tcp (v6)                ALLOW       Anywhere (v6)             
-123/udp (v6)               ALLOW       Anywhere (v6) 
+123/udp (v6)               ALLOW       Anywhere (v6)
     
 6.  Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
-    1.  grader@ip-172-26-13-140:~$ sudo nano /etc/ssh/sshd_config 
-    and enter Yes to confirm editing by root
-        i.   Change port 22 to port 2200
-        ii.  Change "PermitRootLogin prohibit-password" to "PermitRootLogin no" to disable root login.
-        iii. Change "PasswordAuthentication no" to "PasswordAuthentication yes".
-        iv.  Add "AllowUsers grader" at end of the file so that we will login through grader and save
-        v.   Confirm editing was saved by checking the file with:
-            sudo cat /etc/ssh/sshd_config
-    2.  Restart the SSH service : sudo service ssh restart
+    ``` 1.  grader@ip-172-26-13-140:~$ sudo nano /etc/ssh/sshd_config``` 
+        2. Change port 22 to port 2200
+        3. Change "PermitRootLogin prohibit-password" to "PermitRootLogin no" to disable root login.
+        4. Change "PasswordAuthentication no" to "PasswordAuthentication yes".
+        5. Add "AllowUsers grader" at end of the file so that we will login through grader and save
+        6. Confirm editing was saved by checking the file with:
+          ```$ sudo cat /etc/ssh/sshd_config``` 
+        7. Restart the SSH service
+          ```$ sudo service ssh restart``` 
 
 Warning: When changing the SSH port, make sure that the firewall is open for port 2200 first, so that you don't lock yourself out of the server. Review this video for details! When you change the SSH port, the Lightsail instance will no longer be accessible through the web app 'Connect using SSH' button. The button assumes the default port is being used. There are instructions on the same page for connecting from your terminal to the instance. Connect using those instructions and then follow the rest of the steps.
 
+FIX NEEDED
 login to grader account to see if port change from 22 to 2200 worked,
-$ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200
+``` $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200``` 
 ** Not working for -p 2200 **
 
 
-
-
-9. Configure the local timezone to UTC
-    sudo dpkg-reconfigure tzdata
-    and choose "None of the above" and hit enter
+7. Configure the local timezone to UTC
+    ``` $ sudo dpkg-reconfigure tzdata``` 
+    Note: choose "None of the above" and hit enter
     choose UTC and hit enter from the options
     
 
-10. Install and configure Apache to serve a Python mod_wsgi application.
-    i.  Install Apache using  
-        sudo apt-get install apache2
-        Note: you will see the apache ubuntu default page when you type in the public ip address into a url page.
-         52.33.99.231
-         
-    ii.  Install mod_wsgi using 
-        sudo apt-get install python-setuptools libapache2-mod-wsgi
+8. Install and configure Apache to serve a Python mod_wsgi application.
+    1.  Install Apache using  
+        ``` $ sudo apt-get install apache2``` 
+        Note: you will see the apache ubuntu default page when you type in "52.33.99.231" into the public ip address into a url page.      
+    2.  Install mod_wsgi using 
+        ```$ sudo apt-get install python-setuptools libapache2-mod-wsgi```
         
-    iii.  Configure apache to handle requests using the WSGI module by editng file.
-          sudo nano /etc/apache2/sites-enabled/000-default.conf
+    3.  Configure apache to handle requests using the WSGI module by editng file.
+        ```$ sudo nano /etc/apache2/sites-enabled/000-default.conf```
           
-    iv. Add "WSGIScriptAlias / /var/www/html/myapp.wsgi" before the closing block of Virtual Host.
+    4. Add "WSGIScriptAlias / /var/www/html/myapp.wsgi" before the closing block of Virtual Host.
         if you get an error, type:
-        echo "ServerName localhost" | sudo tee /etc/apache2/conf-available/fqdn.conf
-        sudo a2enconf fqdn
+        ```echo "ServerName localhost" | sudo tee /etc/apache2/conf-available/fqdn.conf```
+        ```sudo a2enconf fqdn```
     
-    v.  Restart apache2
-        sudo service apache2 restart
+    5.  Restart apache2
+        ```$ sudo service apache2 restart```
     
-    vi.  Test to verify Apache configurations work by writing a basic WSGI application.
-         1.  Edit the wsgi file
-             sudo nano /var/www/html/myapp.wsgi
-         2.  write a simple appliation
-    Ex:
-    
-    def application(environ, start_response):
+    6.  Test to verify Apache configurations work by writing a basic WSGI application.
+       1.  Edit the wsgi file
+          ```$ sudo nano /var/www/html/myapp.wsgi```
+          
+       2.  write a simple appliation
+    ```def application(environ, start_response):
        status = '200 OK'
        output = 'Hello World!'
 
        response_headers = [('Content-type', 'text/plain'), ('Content-Length', str(len(output)))]
        start_response(status, response_headers)
 
-       return [output]
+       return [output]```
        
   Note:  Check "52.33.99.231" in your browser to see the Hello World! application run.  
 
  
  Install Git
-    1.  Install git 
-        > sudo apt-get install git
+    1. Install git 
+    ```$ sudo apt-get install git```
     2. Setup git
-        > git config --global user.name "username"
-        > git config --global user.email "email@domain.com"
-    Note:  Check configurations with "git config --list"
+    ```$ git config --global user.name "username"```
+    ```$ git config --global user.email "email@domain.com"```
+    3. Check configurations
+    ```$ git config --list```
     
-    
+
  **UP TO HERE**
  Deploy Flask Application
     1.  
-        i. Install python-dev because mod-wsgi is already installed
-            > sudo apt-get install python-dev
-        ii. enable mod_wsgi
-            > sudo a2enmod wsgi
+        1. Install python-dev because mod-wsgi is already installed
+           ```$ sudo apt-get install python-dev```
+        2. enable mod_wsgi
+            ```$ sudo a2enmod wsgi```
     2.  
-        i.  move into the /var/www directory
+        1.  move into the /var/www directory
             1.  create the app directory structure
-                sudo mkdir FlaskApp
+                ```$ sudo mkdir FlaskApp```
             2.  move into that directory
-                cd FlaskApp
+                ```$ cd FlaskApp```
             3.  create another directory
-                sudo mkdir FlaskApp
+                ```$ sudo mkdir FlaskApp```
             4.  make 2 subdirectories within the current directory named static and templates
-                cd catalog
-                sudo mkdir static templates
+                ```$ cd catalog```
+                ```$ sudo mkdir static templates```
             5.  make the init.py file
-                sudo nano __init__.py
+                ```$ sudo nano __init__.py```
             6.  Add this content to the file and close and save
-                from flask import Flask
+                ```from flask import Flask
                 app = Flask(__name__)
                 @app.route("/")
                 def hello():
                     return "Hello, I love Digital Ocean!"
                 if __name__ == "__main__":
-                app.run()
+                app.run()```
     3.  
-        i.  Create a virtual environment for our flask app
-            sudo apt-get install python-pip
-        ii.  Install virtualenv
-            sudo pip install virtualenv
-            note: run "export LC_ALL=C" if you receive an unsupported locale setting issue
-        iii.  Set the environment name
-            sudo virtualenv venv
-            note: "sudo /usr/bin/easy_install virtualenv" if virutalenv command does not work. 
-        iv.  install Flask by activating virtual environment:
-            source venv/bin/activate
-        v.  install Flask
-            sudo pip install Flask
-        vi.  test to see if installation was successful
-            sudo python __init__.py
+        1.  Create a virtual environment for our flask app
+            ```$ sudo apt-get install python-pip```
+        2.  Install virtualenv
+            ```sudo pip install virtualenv```
+            Note: run "export LC_ALL=C" if you receive an unsupported locale setting issue
+        3.  Set the environment name
+            ```$ sudo virtualenv venv```
+            Note: if virutalenv command does not work
+            ```$ sudo /usr/bin/easy_install virtualenv```
+        4.  Install Flask by activating virtual environment:
+            ```$ source venv/bin/activate```
+        5.  Install Flask
+            ```$ sudo pip install Flask```
+        6.  Test to see if installation was successful
+            ```$ sudo python __init__.py```
             Note:  should display "* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)"
-            deactivate virtual environment with "deactivate"
+        7.  Deactivate virtual environment 
+            ```$ deactivate```
             
             
    4.  
-        i.  sudo nano /etc/apache2/sites-available/FlaskApp.conf
-        ii.  Configure the virtual host by adding your servername
-            <VirtualHost *:80>
+        1.  Edit FlaskApp file
+        ```$ sudo nano /etc/apache2/sites-available/FlaskApp.conf```
+        2.  Configure the virtual host by adding your servername
+            ```<VirtualHost *:80>
                 ServerName mywebsite.com
                 ServerAdmin admin@mywebsite.com
                 WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
@@ -277,21 +280,21 @@ $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200
                 ErrorLog ${APACHE_LOG_DIR}/error.log
                 LogLevel warn
                 CustomLog ${APACHE_LOG_DIR}/access.log combined
-            </VirtualHost>
-            *Save and close file
-         iii.  enable virtual host
-                sudo a2ensite FlaskApp
-                NOTE: iff you ge an error for FlaskApp.conf file, so edit the FlaskApp.conf file by setting your Servername, ServerAdmin as:
+            </VirtualHost>```
+            Note: Save and close
+         3.  Enable virtual host
+             ```$ sudo a2ensite FlaskApp```
+             Note: if you ge an error for FlaskApp.conf file, so edit the FlaskApp.conf file by setting your Servername, ServerAdmin as:
 
-<VirtualHost *:80>
+    ```<VirtualHost *:80>
          ServerName 34.214.197.23
          ServerAdmin admin@34.214.197.23
          ServerAlias ec2-34-214-197-23.us-west-2.compute.amazonaws.com
-         
+     ```
    5.  
         i.  Create a wsgi file
-            cd /var/www/catalog
-            sudo nano catalog.wsgi
+            ```$ cd /var/www/catalog```
+            ```$ sudo nano catalog.wsgi```
         ii. add the below content to the file
             #!/usr/bin/python
             import sys
@@ -310,105 +313,107 @@ $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200
                 |----------------catalog.wsgi
       6.  
         i.  Restart Apache
-            sudo service apache2 restart
+            ```$ sudo service apache2 restart```
   
   
   Clone the Github Repository
-    1.  install Git using sudo apt-get install git
+    1.  install Git 
+        ```$ sudo apt-get install git```
     2.  Use cd /var/www to move into the directory
+        ```$ cd /var/www```
     3.  Create the app directory 
-        sudo mkdir FlaskApp
+        ```$ sudo mkdir FlaskApp```
     5.  Clone the Catalog App to the virtual machine
-        grader@ip-172-26-3-24:~$ git clone https://github.com/chezze911/FSND-Virtual-Machine-2.git
+        ```$ git clone https://github.com/chezze911/FSND-Virtual-Machine-2.git```
     6.  Move catalog project to /var/www/FlaskApp/FlaskApp directory
-        sudo mv FSND-Virtual-Machine-2/vagrant/catalog /var/www/FlaskApp/FlaskApp
+        ```$ sudo mv FSND-Virtual-Machine-2/vagrant/catalog /var/www/FlaskApp/FlaskApp```
     7.  Move to the inner FlaskApp directory
-        cd FlaskApp
+        ```$ cd FlaskApp```
     8. folder structure should be:
-        grader@ip-172-26-3-24: /var/www/FlaskApp/FlaskApp$ ls
+        ```grader@ip-172-26-3-24: /var/www/FlaskApp/FlaskApp$ ls```
         within catalog(catalog_client_secrets.json     fb_client_secrets.json      catalog_lotsofitems.py      templates
         catalog_database_setup.py)    __init__.py      static      venv
     10.  Install other Packages
-        i. sudo apt-get install python-pip
-        ii.  source venv/bin/activate
-        iii.  sudo pip install httplib2
-        iv.  sudo pip install requests
-        v.  sudo pip install --upgrade oauth2client
-        vi. sudo pip install sqlalchemy
-        vii.  sudo pip install Flask-SQLAlchemy
-        viii.  sudo pip install flask-seasurf
-        
- 
-        
-    sudo mv FSND-Virtual-Machine-2/vagrant/catalog /var/www/catalog/catalog/
+        1. ```$ sudo apt-get install python-pip```
+        2.  ```$ source venv/bin/activate```
+        3.  ```$ sudo pip install httplib2```
+        4.  ```$ sudo pip install requests```
+        5.  ```$ sudo pip install --upgrade oauth2client```
+        6. ```$ sudo pip install sqlalchemy```
+        7.  ```$ sudo pip install Flask-SQLAlchemy```
+        8.  ```$ sudo pip install flask-seasurf```
+  
+    Note:   ```$ sudo mv FSND-Virtual-Machine-2/vagrant/catalog /var/www/catalog/catalog/```
     
     
     
    
 Install PostgreSQL
     1.  Intall Python PostgreSQL adapter psycopg
-        sudo apt-get install python-psycopg2
+        ```$ sudo apt-get install python-psycopg2```
     2.  Install PostgreSQL
-        sudo apt-get install postgresql postgresql-contrib
+        ```$ sudo apt-get install postgresql postgresql-contrib```
     3.  update the create_engine line in catalog_database_setup.py, catalog_project.py and catalog_lotsofitems.py
-        engine = create_engine('postgresql://catalog:password@localhost/catalog')
+        ```engine = create_engine('postgresql://catalog:password@localhost/catalog')```
     4.  move the catalog_project.py file into init.py
-        mv catalog_project.py init.py
+        ```$ mv catalog_project.py init.py```
     5.  Change to default user postgres
-        sudo su - postgres
+        ```$ sudo su - postgres```
     6.  Connect to the system
-        psql
+        ```$ psql```
     7.  Create user catalog
-        CREATE USER catalog WITH PASSWORD 'password';
+        ```$ CREATE USER catalog WITH PASSWORD 'password';```
     8. check lists of roles
-        \du
+        ```$ \du```
     9.  Allow user to create database
-        ALTER USER catalog CREATEDB;
+        ```$ ALTER USER catalog CREATEDB;```
     10. create database
-        CREATE DATABASE catalog WITH OWNER catalog;
+        ```$ CREATE DATABASE catalog WITH OWNER catalog;```
     11. connect to the database
-        \c catalog
+        ```$ \c catalog```
     12. Revoke all rights
-        REVOKE ALL ON SCHEMA public FROM public;
+        ```$ REVOKE ALL ON SCHEMA public FROM public;```
     13.  Grant access to the catalog
-        GRANT ALL ON SCHEMA public TO catalog;
+        ```$ GRANT ALL ON SCHEMA public TO catalog;```
     14.  When catalog_database_setup.py is executed, you can login to psql and check the tables as followed
-        i.  Connect to the database
-            \c catalog
-        ii.  To see the tables in the schema
-            \dt
-        iii.  To see a single table
-            \d [tablename]
-         iv.  To see entries/data in a table
-            select * from [tablename];
-         v.  To drop the table
-            drop table [tablename];
-         vi.  exit PostgreSQL:
-            \q
-            exit
-         vii.  restart
-              sudo service postgresql restart
+        1.  Connect to the database
+            ```\c catalog```
+        2.  To see the tables in the schema
+            ```\dt```
+        3.  To see a single table
+            ```\d [tablename]```
+        4.  To see entries/data in a table
+            ```select * from [tablename];```
+        5.  To drop the table
+            ```drop table [tablename];```
+        6.  exit PostgreSQL:
+            ``` \q```
+            ``` exit```
+        7.  restart
+            ```$ sudo service postgresql restart```
       
         
 If you built your project with Python 3, you will need to install the Python 3 mod_wsgi package on your server: sudo apt-get install libapache2-mod-wsgi-py3.
 11. Install and configure PostgreSQL:
-    i.  sudo apt-get install postgresql
-    ii. login as user postgres
-        sudo su - postgres
-    iii. Get into the postgreSQL shell with the command psql
-    iv.  create a new database named catalog and create a new user named catalog in a postgreSQL shell
-        postgre=# CREATE DATABASE catalog;
-        postgre=# CREATE USER catalog;
+    1.  Install PostgreSQL
+    ```$ sudo apt-get install postgresql```
+    2. Login as user PostgreSQL
+    ```$ sudo su - postgres```
+    3. Get into the PostgreSQL shell with the command 
+    ```$ psql```
+    4.  Create a new database named catalog and create a new user named catalog in a postgreSQL shell
+    ```postgre=# CREATE DATABASE catalog;```
+    ```postgre=# CREATE USER catalog;```
         
-    v.  Create a password for the user catalog
-        postgres=# ALTER ROLE catalog WITH PASSWORD 'password';
+    5.  Create a password for the user catalog
+     ```postgres=# ALTER ROLE catalog WITH PASSWORD 'password';```
         
-    vi.  Give user catalog permission to catalog the appliation database
-            postgres=# GRANT ALL PRIVILEDGES ON DATABASE catalog TO catalog;
+    6.  Give user catalog permission to catalog the appliation database
+    ```postgres=# GRANT ALL PRIVILEDGES ON DATABASE catalog TO catalog;```
     
-    vii.  Quit and exit postgreSQL 
-            postgre=# \q
-            postgre=# exit
+    7.  Quit and exit postgreSQL 
+    ```postgre=# \q```
+    ```postgre=# exit```
        
   
   Run the Application
