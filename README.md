@@ -158,12 +158,12 @@ $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200
 
 
 
-Prepare to deploy your project.
 9. Configure the local timezone to UTC
     sudo dpkg-reconfigure tzdata
     and choose "None of the above" and hit enter
     choose UTC and hit enter from the options
     
+
 10. Install and configure Apache to serve a Python mod_wsgi application.
     i.  Install Apache using  
         sudo apt-get install apache2
@@ -172,17 +172,23 @@ Prepare to deploy your project.
     ii.  Install mod_wsgi using 
         sudo apt-get install python-setuptools libapache2-mod-wsgi
         
-    iii.  Configure apache to handle requests using the WSGI module by editng the /etc/apache2/sites-enabled/000-default.conf file.  
-    iv.  add "WSGIScriptAlias / /var/www/html/myapp.wsgi" before the closing black of  Virtual Host.
-        if you get an error, use command "echo "ServerName localhost" | sudo tee /etc/apache2/conf-available/fqdn.conf && sudo a2enconf fqdn" in your terminal
+    iii.  Configure apache to handle requests using the WSGI module by editng file.
+          sudo nano /etc/apache2/sites-enabled/000-default.conf
+          
+    iv. Add "WSGIScriptAlias / /var/www/html/myapp.wsgi" before the closing block of Virtual Host.
+        if you get an error, type:
+        echo "ServerName localhost" | sudo tee /etc/apache2/conf-available/fqdn.conf
+        sudo a2enconf fqdn
     
-    v.  Restart with sudo service apache2 restart
+    v.  Restart apache2
+        sudo service apache2 restart
     
     vi.  Test to verify Apache configurations work by writing a basic WSGI application.
          1.  Edit the wsgi file
              sudo nano /var/www/html/myapp.wsgi
          2.  write a simple appliation
-         
+    Ex:
+    
     def application(environ, start_response):
        status = '200 OK'
        output = 'Hello World!'
@@ -192,9 +198,8 @@ Prepare to deploy your project.
 
        return [output]
        
-  Note:  Check http://http://34.214.197.23/ to see the Hello World! application run.  
-  
-  
+  Note:  Check "52.33.99.231" in your browser to see the Hello World! application run.  
+
  
  Install Git
     1.  Install git 
@@ -205,7 +210,7 @@ Prepare to deploy your project.
     Note:  Check configurations with "git config --list"
     
     
- 
+ ** UP TO HERE **
  Deploy Flask Application (6 steps)
     1.  
         i. Install python-dev because mod-wsgi is already installed
