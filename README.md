@@ -204,20 +204,20 @@ $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200
  
  Install Git
     1.  Install git 
-        sudo apt-get install git
+        > sudo apt-get install git
     2. Setup git
-        git config --global user.name "username"
-        git config --global user.email "email@domain.com"
+        > git config --global user.name "username"
+        > git config --global user.email "email@domain.com"
     Note:  Check configurations with "git config --list"
     
     
- ''' UP TO HERE '''
+ **UP TO HERE**
  Deploy Flask Application
     1.  
         i. Install python-dev because mod-wsgi is already installed
-            '''sudo apt-get install python-dev'''
+            > sudo apt-get install python-dev
         ii. enable mod_wsgi
-            '''sudo a2enmod wsgi'''
+            > sudo a2enmod wsgi
     2.  
         i.  move into the /var/www directory
             1.  create the app directory structure
