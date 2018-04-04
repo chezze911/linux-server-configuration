@@ -345,7 +345,7 @@ login to grader account to see if port change from 22 to 2200 worked,
        ```$ cd /var/www/catalog/ and $ sudo vim .htaccess```
          Paste in the following:
          ```RedirectMatch 404 /\.git```
-    10.  Install other Packages in /var/www/catalog/catalog
+    10.  Install other Packages in (venv) grader@ip-172-26-13-140: /var/www/catalog/catalog/catalog
         1. ```$ sudo apt-get install python-pip```
         2.  ```$ source venv/bin/activate```
         3.  ```$ sudo pip install httplib2```
@@ -367,29 +367,28 @@ Install PostgreSQL
         ```$ sudo apt-get install python-psycopg2```
     2.  Install PostgreSQL
         ```$ sudo apt-get install postgresql postgresql-contrib```
-        ***UP TO HERE***
     3.  update the create_engine line in catalog_database_setup.py, catalog_project.py and catalog_lotsofitems.py
         ```engine = create_engine('postgresql://catalog:password@localhost/catalog')```
-    4.  move the catalog_project.py file into init.py
-        ```$ mv catalog_project.py init.py```
+    4.  move the catalog_project.py file into __init__.py
+        ```$ mv catalog_project.py __init__.py```
     5.  Change to default user postgres
         ```$ sudo su - postgres```
     6.  Connect to the system
         ```$ psql```
     7.  Create user catalog
-        ```$ CREATE USER catalog WITH PASSWORD 'password';```
+        ```# CREATE USER catalog WITH PASSWORD 'password';```
     8. check lists of roles
-        ```$ \du```
+        ```# \du```
     9.  Allow user to create database
-        ```$ ALTER USER catalog CREATEDB;```
+        ```# ALTER USER catalog CREATEDB;```
     10. create database
-        ```$ CREATE DATABASE catalog WITH OWNER catalog;```
+        ```# CREATE DATABASE catalog WITH OWNER catalog;```
     11. connect to the database
-        ```$ \c catalog```
+        ```# \c catalog```
     12. Revoke all rights
-        ```$ REVOKE ALL ON SCHEMA public FROM public;```
+        ```# REVOKE ALL ON SCHEMA public FROM public;```
     13.  Grant access to the catalog
-        ```$ GRANT ALL ON SCHEMA public TO catalog;```
+        ```# GRANT ALL ON SCHEMA public TO catalog;```
     14.  When catalog_database_setup.py is executed, you can login to psql and check the tables as followed
         1.  Connect to the database
             ```\c catalog```
@@ -434,17 +433,19 @@ If you built your project with Python 3, you will need to install the Python 3 m
   Run the Application
   1.  Create the database schema
         python catalog_database_setup.py
+        Note: ImportError: No module named sqlalchemy
+        ```$ pip install Flask-SQLAlchemy```
+        ImportError: No module named psycopg2
+        ```$ pip install psycopg2```
         python catalog_lotsofitems.py
-        error in catalog_lotsofitems.py
-        sqlalchemy.exc.DataError: (psycopg2.DataError) value too long for type character varying(250)
- [SQL: 'INSERT INTO catalog_item (name, description, price, catalog_id, user_id) VALUES (%(name)s, %(description)s, %(price)s, %(catalog_id)s, %(user_id)s) RETURNING catalog_item.id'] [parameters: {'price': '$200', 'description': 'This project lets you experience multiple 3D environments from the Udacity VR program. You will download the Udacity VR app and run it inside of your ... (35 characters truncated) ...  the headset, you will walkaround an apartment and island from the VR Nanodegree and see demonstrations of various VR techniques you will soon learn.', 'user_id': 1, 'catalog_id': 6, 'name': 'Project 0: What is the Code?'}] (Background on this error at: http://sqlalche.me/e/9h9h)
+        
+Note: if sqlalchemy.exc.DataError: (psycopg2.DataError) value too long for type character varying(250)
  
- NOTE:
- Go into psql and change TABLE catalog_item COLUMN description TYPE character varying(250)
+ 1.  Go into psql from (/var/www/catalog/catalog) and change TABLE catalog_item COLUMN description TYPE character varying(250)
  and increase the number of characters to 2500.
  
  FIX:
- ALTER TABLE public.catalog_item ALTER COLUMN description TYPE varchar (2500);
+ catalog=# ALTER TABLE public.catalog_item ALTER COLUMN description TYPE varchar (2500);
  
  resources:
  https://discussions.udacity.com/t/reset-postgresql-database/230592/3
@@ -455,9 +456,17 @@ If you built your project with Python 3, you will need to install the Python 3 m
               check installed versions with: pip freeze
   2.  Restart Apache
         sudo service apache2 restart
-  3.  in the directory /var/www/FlaskApp/FlaskApp/catalog
+  3.  in the directory /var/www/catalog/catalog/catalog
         python __init__.py
         
+ ***UP TO HERE***    
+If getting an internal server error, check the Apache error files:
+Source: A2 Hosting
+View the last 20 lines in the error log: $ sudo tail -20 /var/log/apache2/error.log
+*If a file like 'g_client_secrets.json' couldn't been found:
+Source: Stackoverflow
+
+
         Note: Might run into issues related to /etc/apache2/sites-available/FlaskApp.conf
         
         WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
