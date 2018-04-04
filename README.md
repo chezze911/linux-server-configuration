@@ -212,6 +212,8 @@ login to grader account to see if port change from 22 to 2200 worked,
     
 
  **UP TO HERE**
+
+ 
  Deploy Flask Application
     1.  
         1. Install python-dev because mod-wsgi is already installed
@@ -221,12 +223,12 @@ login to grader account to see if port change from 22 to 2200 worked,
     2.  
         1.  move into the /var/www directory
             1.  create the app directory structure
-                ```$ sudo mkdir FlaskApp```
+                ```$ sudo mkdir catalog```
             2.  move into that directory
-                ```$ cd FlaskApp```
+                ```$ cd catalog```
             3.  create another directory
-                ```$ sudo mkdir FlaskApp```
-            4.  make 2 subdirectories within the current directory named static and templates
+                ```$ sudo mkdir catalog```
+            4.  make 2 subdirectories within the next catalog directory named static and templates
                 ```$ cd catalog```
                 ```$ sudo mkdir static templates```
             5.  make the init.py file
@@ -262,7 +264,7 @@ login to grader account to see if port change from 22 to 2200 worked,
             
    4.  
         1.  Edit FlaskApp file
-        ```$ sudo nano /etc/apache2/sites-available/FlaskApp.conf```
+        ```$ sudo nano /etc/apache2/sites-available/catalog.conf```
         2.  Configure the virtual host by adding your servername
             ```<VirtualHost *:80>
                 ServerName mywebsite.com
@@ -296,13 +298,13 @@ login to grader account to see if port change from 22 to 2200 worked,
             ```$ cd /var/www/catalog```
             ```$ sudo nano catalog.wsgi```
         ii. add the below content to the file
-            #!/usr/bin/python
+            ```#!/usr/bin/python
             import sys
             import logging
             logging.basicConfig(stream=sys.stderr)
-            sys.path.insert(0,"/var/www/FlaskApp/")
-            from FlaskApp import app as application
-            application.secret_key = 'Add your secret key'
+            sys.path.insert(0,"/var/www/catalog/")
+            from catalog import app as application
+            application.secret_key = 'Add your secret key'```
             Note:  current directory structure should be:
                 |--------catalog
                 |----------------catalog
@@ -319,26 +321,38 @@ login to grader account to see if port change from 22 to 2200 worked,
   Clone the Github Repository
     1.  install Git 
         ```$ sudo apt-get install git```
-    2.  Use cd /var/www to move into the directory
-        ```$ cd /var/www```
-    3.  Create the app directory 
-        ```$ sudo mkdir FlaskApp```
+    2.  Use cd ~/ to move into the directory
+        ```$ cd ~/```
+    3.  Create the app directory named code
+        ```$ mkdir code```
     5.  Clone the Catalog App to the virtual machine
+        ```$ cd code```
         ```$ git clone https://github.com/chezze911/FSND-Virtual-Machine-2.git```
-    6.  Move catalog project to /var/www/FlaskApp/FlaskApp directory
-        ```$ sudo mv FSND-Virtual-Machine-2/vagrant/catalog /var/www/FlaskApp/FlaskApp```
-    7.  Move to the inner FlaskApp directory
-        ```$ cd FlaskApp```
+    6.  Move catalog project to /var/www/catalog/catalog directory
+        ```$ sudo mv FSND-Virtual-Machine-2/vagrant/catalog /var/www/catalog/catalog```
+    7.  Move to the inner catalog directory
+        ```$ cd catalog```
     8. folder structure should be:
-        ```grader@ip-172-26-3-24: /var/www/FlaskApp/FlaskApp$ ls```
-        within catalog(catalog_client_secrets.json     fb_client_secrets.json      catalog_lotsofitems.py      templates
+        ```grader@ip-172-26-3-24: /var/www/catalog/catalog$ ls```
+        within catalog(README.txt                   catalog_database_setup.pyc  fb_client_secrets.json
+         Vagrantfile                  catalog_lotsofitems.py      lib
+         appengine_config.py          catalog_project.py          static
+         catalog_client_secrets.json  catalog_webserver.py        templates
+         catalog_database_setup.py    catalogitemswithusers.db    webserver.py)
+       (catalog_client_secrets.json     fb_client_secrets.json      catalog_lotsofitems.py      templates
         catalog_database_setup.py)    __init__.py      static      venv
-    10.  Install other Packages
+    9. Create and open .htaccess file:
+       ```$ cd /var/www/catalog/ and $ sudo vim .htaccess```
+         Paste in the following:
+         ```RedirectMatch 404 /\.git```
+    10.  Install other Packages in /var/www/catalog/catalog
         1. ```$ sudo apt-get install python-pip```
         2.  ```$ source venv/bin/activate```
         3.  ```$ sudo pip install httplib2```
         4.  ```$ sudo pip install requests```
         5.  ```$ sudo pip install --upgrade oauth2client```
+        Note:  run if you receive locale.Error:  unsupported locale settings
+               ```$ export LC_ALL=C```
         6. ```$ sudo pip install sqlalchemy```
         7.  ```$ sudo pip install Flask-SQLAlchemy```
         8.  ```$ sudo pip install flask-seasurf```
@@ -353,6 +367,7 @@ Install PostgreSQL
         ```$ sudo apt-get install python-psycopg2```
     2.  Install PostgreSQL
         ```$ sudo apt-get install postgresql postgresql-contrib```
+        ***UP TO HERE***
     3.  update the create_engine line in catalog_database_setup.py, catalog_project.py and catalog_lotsofitems.py
         ```engine = create_engine('postgresql://catalog:password@localhost/catalog')```
     4.  move the catalog_project.py file into init.py
