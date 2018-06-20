@@ -654,6 +654,16 @@ https://discussions.udacity.com/t/importerror-no-module-named-flaskapp/304285/3
 
 
 
+Internal Server Error
+The server encountered an internal error or misconfiguration and was unable to complete your request.
+Please contact the server administrator at admin@52.33.99.231 to inform them of the time this error occurred, and the actions you performed just before this error.
+More information about this error may be available in the server error log.
+Apache/2.4.18 (Ubuntu) Server at 52.33.99.231 Port 80
+
+
+sudo tail -10 /var/log/apache2/error.log 
+
+
 [Tue Jun 19 14:22:57.101781 2018] [wsgi:error] [pid 620:tid 140212856399616] [client 173.184.76.138:50570]   File "/var/www/catalog/catalog.wsgi", line 1
 [Tue Jun 19 14:22:57.101788 2018] [wsgi:error] [pid 620:tid 140212856399616] [client 173.184.76.138:50570]     <VirtualHost *:80>
 [Tue Jun 19 14:22:57.101790 2018] [wsgi:error] [pid 620:tid 140212856399616] [client 173.184.76.138:50570]     ^
