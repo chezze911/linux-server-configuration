@@ -154,11 +154,6 @@ To                         Action      From
 
 Warning: When changing the SSH port, make sure that the firewall is open for port 2200 first, so that you don't lock yourself out of the server. Review this video for details! When you change the SSH port, the Lightsail instance will no longer be accessible through the web app 'Connect using SSH' button. The button assumes the default port is being used. There are instructions on the same page for connecting from your terminal to the instance. Connect using those instructions and then follow the rest of the steps.
 
-FIX NEEDED
-login to grader account to see if port change from 22 to 2200 worked,
-``` $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200``` 
-** Not working for -p 2200 **
-
 
 7. Configure the local timezone to UTC
     ``` $ sudo dpkg-reconfigure tzdata``` 
@@ -209,9 +204,6 @@ login to grader account to see if port change from 22 to 2200 worked,
     ```$ git config --global user.email "email@domain.com"```
     3. Check configurations
     ```$ git config --list```
-    
-
- **UP TO HERE**
 
  
  Deploy Flask Application
@@ -459,7 +451,7 @@ Note: if sqlalchemy.exc.DataError: (psycopg2.DataError) value too long for type 
   3.  in the directory /var/www/catalog/catalog/catalog
         python __init__.py
         
- ***UP TO HERE***    
+
 If getting an internal server error, check the Apache error files:
 Source: A2 Hosting
 View the last 20 lines in the error log: $ sudo tail -20 /var/log/apache2/error.log
@@ -654,13 +646,58 @@ because it refers to the directory which is now named catalog
 
 - restart apache2 and check error logs
 
-on http://34.214.197.23/,
-output:
-Hello World again!
+
+
 
 Resources:
 https://discussions.udacity.com/t/importerror-no-module-named-flaskapp/304285/3
 
+
+
+[Tue Jun 19 14:22:57.101781 2018] [wsgi:error] [pid 620:tid 140212856399616] [client 173.184.76.138:50570]   File "/var/www/catalog/catalog.wsgi", line 1
+[Tue Jun 19 14:22:57.101788 2018] [wsgi:error] [pid 620:tid 140212856399616] [client 173.184.76.138:50570]     <VirtualHost *:80>
+[Tue Jun 19 14:22:57.101790 2018] [wsgi:error] [pid 620:tid 140212856399616] [client 173.184.76.138:50570]     ^
+[Tue Jun 19 14:22:57.101793 2018] [wsgi:error] [pid 620:tid 140212856399616] [client 173.184.76.138:50570] SyntaxError: invalid syntax
+[Tue Jun 19 14:22:57.410814 2018] [wsgi:error] [pid 620:tid 140212848006912] [client 173.184.76.138:50571] mod_wsgi (pid=620, process='', application='52.33.99.231|'): Failed to parse WSGI script file '/var/www/catalog/catalog.wsgi'.
+[Tue Jun 19 14:22:57.410827 2018] [wsgi:error] [pid 620:tid 140212848006912] [client 173.184.76.138:50571] mod_wsgi (pid=620): Exception occurred processing WSGI script '/var/www/catalog/catalog.wsgi'.
+[Tue Jun 19 14:22:57.410865 2018] [wsgi:error] [pid 620:tid 140212848006912] [client 173.184.76.138:50571]   File "/var/www/catalog/catalog.wsgi", line 1
+[Tue Jun 19 14:22:57.410871 2018] [wsgi:error] [pid 620:tid 140212848006912] [client 173.184.76.138:50571]     <VirtualHost *:80>
+[Tue Jun 19 14:22:57.410874 2018] [wsgi:error] [pid 620:tid 140212848006912] [client 173.184.76.138:50571]     ^
+[Tue Jun 19 14:22:57.410877 2018] [wsgi:error] [pid 620:tid 140212848006912] [client 173.184.76.138:50571] SyntaxError: invalid syntax
+
+
+<VirtualHost *:80>
+        ServerName 52.33.99.231
+        ServerAdmin admin@52.33.99.231
+        ServerAlias ec2-52-33-99-231.us-west-2.compute.amazonaws.com
+        WSGIScriptAlias / /var/www/catalog/catalog.wsgi
+        <Directory /var/www/catalog/catalog.wsgi>
+            Order allow,deny
+            Allow from all
+        </Directory>
+        Alias /static /var/www/catalog/catalog.wsgi
+        <Directory /var/www/catalog/catalog.wsgi>
+            Order allow,deny
+            Allow from all
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        LogLevel warn
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+#!/usr/bin/python
+  import sys
+  import logging
+  logging.basicConfig(stream=sys.stderr)
+  sys.path.insert(0,"/var/www/catalog/")
+
+  from catalog import app as application
+  application.secret_key = 'Add your secret key'
+
+
+
+
+ 
  
   
       
