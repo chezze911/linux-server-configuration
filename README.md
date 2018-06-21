@@ -1,6 +1,39 @@
 # linux-server-configuration
 Udacity FSND project
 
+grader password:  udacity 
+
+-----BEGIN RSA PRIVATE KEY-----
+Proc-Type: 4,ENCRYPTED
+DEK-Info: AES-128-CBC,2647A91C9AC354C8028801BE0BD544F4
+
+yGWd5W+gs9Emk/NNV7896t32rkBykqtBwKRneuG3A0eRllCCErBs0p42KlcFCnGi
+mAQOUGV3lSEdFUfNRdUA4H4SryD4YwNdlb8OxmtyZbRnTf2g1cLWMoCnrlDVa4xN
+2wRlnniK3BiHiFb8w5ek5f9jguwN8f7MdaiCDZEeJ9EX86drMIybkb3JpZR+ZQuH
+0GkJ6tmeztKmORjBQNms+8UNmSQ0Qu5OKaCSDnIE6MchM2uMNZ7D8JUf4019kCPi
+xzVyttjoN4+na3VSdCj+rntngrLpO+yC6r0/WPUqiS1556fP5OeZx0EPE50D3ilB
+A7RKNiSL6onx3VbIYXrYI0TLTIaaPkxoAL2mACtsSjcRGDJeSCQDWeWxjY5UIb+m
+0hjz+oTvW3Ap8zz+qof6A4rGoa3J22EKUkoxjlHn12whGvgxbDKDKibEeVNHElwj
+U8rD8Py9MSohChYVa/5QTLCPli89/eP3snQioFR5B43RyP9/UrFTtqMRyqmfZJqj
+EH4eZ2+MxRcL9/nsGF7GCFFRB5kLh5OEMyFoFhyYkZxMWdbP/LMoVTb+CyB5R0Dy
+wX34NVSPaQnScNoJx4tKBMXPRerh4pB/ozrvu/lJtvp5vIkEre2SdaI7oZ4owPGg
+2XBZxpgci2IN6RYwtSswtdnJnHgbpZl4wBblbPQfNEAYF8uKPB6G3xxRs+/+WmqK
+tcCFNBZHPrbvDKaCIpI7beQbtCpaK47dN4Isku1xxXXaMUiOtbECXVli2mmI6cmR
+OrPICApexORPFsJi91o2N3GFICZcOZtncQC76sKbkof30qw3GAKSL7Bg8fn4cHqa
+RMmgRuN1fKn8TsWxgDEbux9OPc34zFzwkcCUcKiS7T3lsrRoWzki2PsnJ15PVu4T
+9pcoVBcfJeli3eWgXUX8C/q2zCDubaTqDya8KQrd2pDI1lT8O8CVnqU+5LRHxpN4
+30h1nSEubd70z0m/zYAiwF1BLmGgQLEtjYFzrbAYHJ2WyuaAgrKgEC2v5KfVQcC3
+2cuzN/JkgksN+nHztGwwdrXqe6zkn8SwvKeNEXBMgI3arluiI6Iw6tXoi0Hhjd5N
+4Lg6yzU+6n0yeivkPCS8npNZsKU3YwfKe0IZFVB9R6eN7bsFx/pZ4weaqCPf3aNH
+WfyfAc9bzDNo8gtuKcIw1ByGYRCc0tfA7LLQNjI0fqC66VrBDKj/MpLfxj3aNjmh
+hCWzJDxLuw8bzBfIprrvewjsDeWUaLHHypHm5kP8vcSgQWjkA1By6JyNudk3VwFD
+p5OzGdNX2igB+Nu46RxykSQOvYMvgyOfiCw7hzeI/eIZL+kiMYFpfibruqHGwzD2
+KCCBM2vtsHT9b+Y7Gzrye6ugAuAFPAUqFYDGmLgknHQ4Qjoljx39XOMAWBVLPo4I
+Qe7oPAp4xGqS9171iwx9BcviJJa9/yyyevS0fFaJHR48BuQjNN9MWx7Gn5jz2DYm
+AzZ0kWJhqI7b5fh1d2xMq3JGMtABdETJJCzS5bxSxeGMqJvvoJgD29dLnxZMoFdp
+QRuRjph/DoxuTyKygmVWZaMCp831bCQC7DxamFmTjij3ZSqVYhcNjjB3w2+ZDzLR
+-----END RSA PRIVATE KEY-----
+
 Get your server.
 1. Start a new Ubuntu Linux server instance on Amazon Lightsail. There are full details on setting up your Lightsail instance on the next page.
 2. Follow the instructions provided to SSH into your server.
