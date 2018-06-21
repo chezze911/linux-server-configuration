@@ -6,18 +6,33 @@ Get your server.
 2. Follow the instructions provided to SSH into your server.
 
 Public IP
-34.214.197.23
 52.33.99.231
 
 User name
-ubuntu
+initially: ubuntu
+ubuntu -> grader
 
 SSH into your server
 Download default private key from AWS 
 Do you want to add the certificate from the life "LightsaleDefaultPrivateKey-us-west-2.pem" to a keychain?
 keychain login
 
-- an error occured.  unable to import the item.
+Essential Software/Packages
+apache2
+libapache2-mod-wsgi
+python-psycop2
+python-flask
+postgresql
+flask-seasurf
+sqlalchemy
+psycopg2
+oath2client
+requests
+httplib2
+git
+
+
+
 ```
 1.  mv ~/Downloads/LightsailDefaultPrivateKey-us-west-2.pem ~/.ssh/
 2.  chmod 600 ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem
@@ -27,6 +42,7 @@ keychain login
 
 private server:
 ubuntu@ip-172-26-13-140
+ubuntu -> grader
 
 1.  Give grader access.
 In order for your project to be reviewed, the grader needs to be able to log in to your server.
@@ -56,7 +72,7 @@ In order for your project to be reviewed, the grader needs to be able to log in 
     1.  generate key-pair
         ``` ssh-keygen``` 
 
-    2.  Save keygen file into (/home/ubuntu/.ssh/udacity_key_1.rsa) and fill in the password. public key    (udacity_key_1.rsa.pub) and identification key(udacity_key_1.rsa) will be generated.
+    2.  Save keygen file into (/Users/chinguyen/grader/.ssh/udacity_key_1.rsa) and fill in the password. public key    (udacity_key_1.rsa.pub) and identification key(udacity_key_1.rsa) will be generated.
   
 
     3.  Login into the grader account using on your virtual machine:
