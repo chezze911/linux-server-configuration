@@ -9,8 +9,7 @@ Public IP
 52.33.99.231
 
 User name
-initially: ubuntu
-ubuntu -> grader
+grader
 
 SSH into your server
 Download default private key from AWS 
@@ -41,8 +40,8 @@ git
 
 
 private server:
-ubuntu@ip-172-26-13-140
-ubuntu -> grader
+grader@ip-172-26-13-140
+
 
 1.  Give grader access.
 In order for your project to be reviewed, the grader needs to be able to log in to your server.
