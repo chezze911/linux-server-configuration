@@ -41,8 +41,6 @@ Get your server.
 Public IP
 52.33.99.231
 
-54.201.173.229
-
 User name
 grader
 
@@ -70,12 +68,12 @@ git
 ```
 1.  mv ~/Downloads/LightsailDefaultPrivateKey-us-west-2.pem ~/.ssh/
 2.  chmod 600 ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem
-3.  ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@54.201.173.229
+3.  ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@52.33.99.231
 ```
 
 
 private server:
-grader@ip-172-26-15-236
+grader@ip-172-26-13-140
 
 
 1.  Give grader access.
@@ -148,16 +146,29 @@ Secure your server.
     ```$ sudo apt-get upgrade``` 
        Note:  SELECT by highlighting "keep the local version currently installed" and hit ENTER
 
+5.  Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
+    ``` 1.  grader@ip-172-26-13-140:~$ sudo nano /etc/ssh/sshd_config``` 
+        2. Change port 22 to port 2200
+        3. Change "PermitRootLogin prohibit-password" to "PermitRootLogin no" to disable root login.
+        4. Change "PasswordAuthentication no" to "PasswordAuthentication yes".
+        5. Add "AllowUsers grader" at end of the file so that we will login through grader and save
+        6. Confirm editing was saved by checking the file with:
+          ```$ sudo cat /etc/ssh/sshd_config``` 
+        7. Restart the SSH service
+          ```$ sudo service ssh restart``` 
+          
+          ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200
+          works!
 
-5.  Configure the Uncomplicated Firewall (UFW) to only allow incoming connections for SSH (port 2200), HTTP (port 80), and NTP (port 123).
+Warning: When changing the SSH port, make sure that the firewall is open for port 2200 first, so that you don't lock yourself out of the server. Review this video for details! When you change the SSH port, the Lightsail instance will no longer be accessible through the web app 'Connect using SSH' button. The button assumes the default port is being used. There are instructions on the same page for connecting from your terminal to the instance. Connect using those instructions and then follow the rest of the steps.
+
+6.  Configure the Uncomplicated Firewall (UFW) to only allow incoming connections for SSH (port 2200), HTTP (port 80), and NTP (port 123).
     1.  check the firewall status 
         ``` $ sudo ufw status``` 
     2.  block all incoming connections on all ports 
         ``` $ sudo ufw default deny incoming``` 
     3.  allow outgoing connections on all ports 
         ``` $ sudo ufw default allow outgoing``` 
-    4.  allow ssh connection 
-        ``` $ sudo ufw allow ssh``` 
     4.  allow incoming connection for SSH(port 2200) 
         ``` $ sudo ufw allow 2200/tcp``` 
     5.  allow incoming connection for HTTP(port 80) 
@@ -169,44 +180,31 @@ Secure your server.
         
         should display:
         Added user rules (see 'ufw status' for running firewall):
-        ufw allow 22
         ufw allow 2200/tcp
         ufw allow 80/tcp
         ufw allow 123/udp  
-    8.  enable the firewall
+    8.  deny connection to port 22
+        ```sudo ufw deny 22``` 
+    9.  enable the firewall
         ```$ sudo ufw enable``` 
-    9.  check whether firewall is enable or not
+    10.  check whether firewall is enable or not
         ```$ sudo ufw status``` 
-        
+    
         should display:
         Status: active
 
 To                         Action      From
---                         ------      ----
-22                         ALLOW       Anywhere                  
+--                         ------      ----       
+22                         DENY        Anywhere  
 2200/tcp                   ALLOW       Anywhere                  
 80/tcp                     ALLOW       Anywhere                  
-123/udp                    ALLOW       Anywhere                  
-22 (v6)                    ALLOW       Anywhere (v6)             
+123/udp                    ALLOW       Anywhere    
+22 (v6)                    DENY        Anywhere (v6)  
 2200/tcp (v6)              ALLOW       Anywhere (v6)             
 80/tcp (v6)                ALLOW       Anywhere (v6)             
 123/udp (v6)               ALLOW       Anywhere (v6)
     
-6.  Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
-    ``` 1.  grader@ip-172-26-13-140:~$ sudo nano /etc/ssh/sshd_config``` 
-        2. Change port 22 to port 2200
-        3. Change "PermitRootLogin prohibit-password" to "PermitRootLogin no" to disable root login.
-        4. Change "PasswordAuthentication no" to "PasswordAuthentication yes".
-        5. Add "AllowUsers grader" at end of the file so that we will login through grader and save
-        6. Confirm editing was saved by checking the file with:
-          ```$ sudo cat /etc/ssh/sshd_config``` 
-        7. Restart the SSH service
-          ```$ sudo service ssh restart``` 
-          
-          ssh -i ~/.ssh/udacity_key_3.rsa grader@52.33.99.231 -p 2200
-          works!
 
-Warning: When changing the SSH port, make sure that the firewall is open for port 2200 first, so that you don't lock yourself out of the server. Review this video for details! When you change the SSH port, the Lightsail instance will no longer be accessible through the web app 'Connect using SSH' button. The button assumes the default port is being used. There are instructions on the same page for connecting from your terminal to the instance. Connect using those instructions and then follow the rest of the steps.
 
 
 7. Configure the local timezone to UTC
