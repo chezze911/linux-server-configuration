@@ -41,6 +41,8 @@ Get your server.
 Public IP
 52.33.99.231
 
+54.201.173.229
+
 User name
 grader
 
@@ -68,12 +70,12 @@ git
 ```
 1.  mv ~/Downloads/LightsailDefaultPrivateKey-us-west-2.pem ~/.ssh/
 2.  chmod 600 ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem
-3.  ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@52.33.99.231
+3.  ssh -i ~/.ssh/LightsailDefaultPrivateKey-us-west-2.pem ubuntu@54.201.173.229
 ```
 
 
 private server:
-grader@ip-172-26-13-140
+grader@ip-172-26-15-236
 
 
 1.  Give grader access.
@@ -133,6 +135,7 @@ In order for your project to be reviewed, the grader needs to be able to log in 
         
         ``` $ ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231``` 
         (Note: Enter password if one was created.
+        
         On successful login, you will see:  grader@ip-172-26-13-140:~$) 
 
 
@@ -199,6 +202,9 @@ To                         Action      From
           ```$ sudo cat /etc/ssh/sshd_config``` 
         7. Restart the SSH service
           ```$ sudo service ssh restart``` 
+          
+          ssh -i ~/.ssh/udacity_key_3.rsa grader@52.33.99.231 -p 2200
+          works!
 
 Warning: When changing the SSH port, make sure that the firewall is open for port 2200 first, so that you don't lock yourself out of the server. Review this video for details! When you change the SSH port, the Lightsail instance will no longer be accessible through the web app 'Connect using SSH' button. The button assumes the default port is being used. There are instructions on the same page for connecting from your terminal to the instance. Connect using those instructions and then follow the rest of the steps.
 
@@ -695,6 +701,8 @@ because it refers to the directory which is now named catalog
 - restart apache2 and check error logs
 
 
+allows for all system packages to be updated to most recent versions
+- sudo apt install unattended-upgrades 
 
 
 Resources:
