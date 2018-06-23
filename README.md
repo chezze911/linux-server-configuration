@@ -145,6 +145,9 @@ Secure your server.
     2. Install the packages
     ```$ sudo apt-get upgrade``` 
        Note:  SELECT by highlighting "keep the local version currently installed" and hit ENTER
+       
+    3. Install all updates 
+    ```sudo apt install unattended-upgrades```
 
 5.  Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
     ``` 1.  grader@ip-172-26-13-140:~$ sudo nano /etc/ssh/sshd_config``` 
@@ -157,7 +160,7 @@ Secure your server.
         7. Restart the SSH service
           ```$ sudo service ssh restart``` 
           
-          ssh -i ~/.ssh/udacity_key_1.rsa grader@52.33.99.231 -p 2200
+          var
           works!
 
 Warning: When changing the SSH port, make sure that the firewall is open for port 2200 first, so that you don't lock yourself out of the server. Review this video for details! When you change the SSH port, the Lightsail instance will no longer be accessible through the web app 'Connect using SSH' button. The button assumes the default port is being used. There are instructions on the same page for connecting from your terminal to the instance. Connect using those instructions and then follow the rest of the steps.
@@ -358,6 +361,17 @@ To                         Action      From
                 |-----------------------__init__.py
                 |----------------catalog.wsgi
       6.  
+      7.  Delete redundant content above #!/usr/bin/python in wsgi file
+      ```#!/usr/bin/python
+         import sys
+         import logging
+         logging.basicConfig(stream=sys.stderr)
+         sys.path.insert(0,"/var/www/catalog/")```
+
+  from catalog import app as application
+  application.secret_key = 'Add your secret key'
+
+
         i.  Restart Apache
             ```$ sudo service apache2 restart```
   
@@ -625,6 +639,32 @@ from FlaskApp import app as application
 application.secret_key = 'Add your secret key'
 
 
+Current catalog.wsgi file
+
+#!/usr/bin/python
+  import sys
+  import logging
+  logging.basicConfig(stream=sys.stderr)
+  sys.path.insert(0,"/var/www/catalog/catalog/")
+  
+  from catalog import app as application
+  from catalog.database_setup import create_db
+  from catalog.populate_database import populate_database
+
+  application.secret_key = 'Add your secret key'
+
+  application.config['DATABASE_URL'] = 'postgresql://catalog:password@localhost/catalog'
+  application.config['UPLOAD_FOLDER'] = '/var/www/catalog/catalog/catalog/'
+  application.config['OAUTH_SECRET_LOCATION'] = '/var/www/catalog/catalog/catalog/'
+  application.config['ALLOWED_EXTENSIONS'] = SET(['jpg', 'jpeg', 'png', 'gif'])
+  application.config['MAX_CONTENT_LENGTH'] = 4 * 1024 * 1024 
+
+#Create database and populate
+create_db(application.config['DATABASE_URL'])
+populate_database()
+
+
+
 To disable the default site:
 sudo a2dissite 000-default
 
@@ -760,13 +800,42 @@ sudo tail -10 /var/log/apache2/error.log
 
 
 
-
+grader@ip-172-26-13-140:/var/www/catalog/catalog/catalog$ sudo tail -10 /var/log/apache2/error.log
+[Sat Jun 23 22:15:42.837764 2018] [wsgi:error] [pid 7950:tid 140555009001216] [client 99.116.48.222:51986] Traceback (most recent call last):
+[Sat Jun 23 22:15:42.837778 2018] [wsgi:error] [pid 7950:tid 140555009001216] [client 99.116.48.222:51986]   File "/var/www/catalog/catalog.wsgi", line 8, in <module>
+[Sat Jun 23 22:15:42.837798 2018] [wsgi:error] [pid 7950:tid 140555009001216] [client 99.116.48.222:51986]     from catalog.database_setup import create_db
+[Sat Jun 23 22:15:42.837811 2018] [wsgi:error] [pid 7950:tid 140555009001216] [client 99.116.48.222:51986] ImportError: No module named database_setup
+[Sat Jun 23 22:15:42.945971 2018] [wsgi:error] [pid 7949:tid 140554868348672] [client 99.116.48.222:51987] mod_wsgi (pid=7949): Target WSGI script '/var/www/catalog/catalog.wsgi' cannot be loaded as Python module.
+[Sat Jun 23 22:15:42.945991 2018] [wsgi:error] [pid 7949:tid 140554868348672] [client 99.116.48.222:51987] mod_wsgi (pid=7949): Exception occurred processing WSGI script '/var/www/catalog/catalog.wsgi'.
+[Sat Jun 23 22:15:42.946005 2018] [wsgi:error] [pid 7949:tid 140554868348672] [client 99.116.48.222:51987] Traceback (most recent call last):
+[Sat Jun 23 22:15:42.946019 2018] [wsgi:error] [pid 7949:tid 140554868348672] [client 99.116.48.222:51987]   File "/var/www/catalog/catalog.wsgi", line 8, in <module>
+[Sat Jun 23 22:15:42.946039 2018] [wsgi:error] [pid 7949:tid 140554868348672] [client 99.116.48.222:51987]     from catalog.database_setup import create_db
+[Sat Jun 23 22:15:42.946052 2018] [wsgi:error] [pid 7949:tid 140554868348672] [client 99.116.48.222:51987] ImportError: No module named database_setup
  
  
   
-      
-      
- 
+      #!/usr/bin/python
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/catalog/")
+
+from catalog import app as application
+from catalog.database_setup import create_db
+from catalog.populate_database import populate_database
+
+application.secret_key = 'Add your secret key'
+
+application.config['DATABASE_URL'] = 'postgresql://catalog:password@localhost/c$
+application.config['UPLOAD_FOLDER'] = '/var/www/catalog/catalog/catalog/'
+application.config['OAUTH_SECRET_LOCATION'] = '/var/www/catalog/catalog/catalog$
+application.config['ALLOWED_EXTENSIONS'] = SET(['jpg', 'jpeg', 'png', 'gif'])
+application.config['MAX_CONTENT_LENGTH'] = 4 * 1024 * 1024 #  4 MB
+
+#Create database and populate
+create_db(application.config['DATABASE_URL'])
+populate_database()
+
 
 
     
